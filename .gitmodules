@@ -1,0 +1,3 @@
+[submodule "BatteryBug"]
+	path = BatteryBug
+	url = https://github.com/maximedaniel/BatteryBug

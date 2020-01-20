@@ -1,3 +1,6 @@
 [submodule "BatteryBug"]
 	path = BatteryBug
 	url = https://github.com/maximedaniel/BatteryBug
+[submodule "CairnFORM"]
+	path = CairnFORM
+	url = https://github.com/maximedaniel/CairnFORM

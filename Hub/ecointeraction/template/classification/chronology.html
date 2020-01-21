@@ -1,0 +1,139 @@
+{% include "../header.html" %}
+<main id="content" style="padding-left:0">
+  <div class="parallax-container" style="height:200px">
+  </div>
+  <div class="section white">
+    <h3 class="header center white indigo-text text-darken-4">Chronologie de la thèse</h3>
+  <ul class="timeline">
+  <li>
+    <time class="time"><span><h4>Octobre<br>2015</h4></span></time>
+    <div class="icon"></div>
+    <div class="label">
+      <h5 class="black-text center">Début de la thèse<h5>
+    </div>
+  </li>
+  <li>
+    <time class="time"><span><h4>Décembre<br>2016</h4></span></time>
+    <div class="icon"></div>
+    <div class="label">
+      <h5 class="black-text center">Proposition de talk à ETIS'16 <span class="green-text">acceptée</span> :</h5>
+      <h5 class="black-text center"><i>How can Tangible User Interfaces support Persuasive Technology?</i></h5>
+      <p class="black-text"></p>
+    </div>
+  </li>
+  <li>
+    <time class="time"><span><h4>Mai<br>2016</h4></span></time>
+    <div class="icon"></div>
+    <div class="label">
+      <h5 class="black-text center">Soumission d'un article long à IHM'16 <span class="green-text">acceptée</span></h5>
+      <h5 class="black-text center"><i>An Analysis of Persuasive Technologies for Energy Demand Side Management</i></h5>
+    </div>
+  </li>
+  <li>
+    <time class="time"><span><h4>Juillet<br>2016</h4></span></time>
+    <div class="icon"></div>
+    <div class="label">
+      <h5 class="black-text center">Soumission d'un travail en cours à IHM'16 <span class="green-text">acceptée</span></h5>
+      <h5 class="black-text center"><i>Persuasive Interactive Systems in Public and Collective Spaces: what role for Tangible Interfaces ?</i></h5>
+    </div>
+    <div class="label">
+      <h5 class="black-text center">Soumission aux rencontes doctorales à IHM'16 <span class="green-text">acceptée</span></h5>
+      <h5 class="black-text center"><i>Persuasive Interactive Systems in Public and Collective Spaces: what role for Tangible Interfaces ?</i></h5>
+    </div>
+  </li>
+  <li>
+    <time class="time"><span><h4>Août<br>2016</h4></span></time>
+    <div class="icon"></div>
+    <div class="label">
+      <h5 class="black-text center">Soumission d'un article long à TEI'17 <span class="red-text">rejetée</span></h5>
+      <h5 class="black-text center"><i>Opportunities of Tangible Persuasive Technologies for Energy Demand Side Management</i></h5>
+      <h5 class="black-text center"><span class="red-text">Faiblesse dans la méthodologie</span>  + <span class="red-text">Manque de recommendations concrètes</span> + <span class="red-text">problèmes d'anglais</span></h5>
+
+    </div>
+  </li>
+  <li>
+    <time class="time"><span><h4>Septembre<br>2016</h4></span></time>
+    <div class="icon"></div>
+    <div class="label">
+      <h5 class="black-text center">Soumission d'un article long à CHI'17 <span class="red-text">rejetée</span></h5>
+      <h5 class="black-text center"><i>Suitable User Interfaces for the Stages of Behavior Change: Surveying 45 Persuasive Systems for Energy Sufficiency</i></h5>
+      <h5 class="black-text center"><span class="red-text">Faiblesse dans la méthodologie</span> + <span class="red-text">manque de prise en compte de critiques récentes sur le domaine</span></h5>
+    </div>
+  </li>
+  <li>
+    <time class="time"><span><h4>Novembre<br>2016</h4></span></time>
+    <div class="icon"></div>
+    <div class="label">
+      <h5 class="black-text center">Soumission d'un article long à Persuasive'17 <span class="red-text">rejetée</span></h5>
+      <h5 class="black-text center"><i>Opportunities of Tangible Persuasive Technologies for Energy Demand-Side Management</i></h5>
+      <h5 class="black-text center"><span class="red-text">Manque de maturité dans la théorie</span></h5>
+    </div>
+  </li>
+  <li>
+    <time class="time"><span><h4>Janvier<br>2017</h4></span></time>
+    <div class="icon"></div>
+    <div class="label">
+      <h5 class="black-text center">Soumission d'un article long à DIS'17 <span class="indigo-text text-darken-2">en attente de notification</span></h5>
+      <h5 class="black-text center"><i>Refocusing the Design of Interactive Persuasive Systems for Energy Sufficiency</i></h5>
+    </div>
+  </li>
+</ul>
+  </div>
+  <div class="parallax-container" style="height:100px"> 
+  </div>
+</main>
+  <script src="/static/js/setOps.js"></script>
+<script type="text/javascript">
+so = setOps;
+var final = [];
+
+  function Reset() {
+    final = []
+    {% for interactive_system in interactive_systems %}
+        final.push("{{interactive_system.id}}")
+        $( "#{{interactive_system.id}}").show();
+    {% endfor %}
+  }
+  function UnCheckAll() {
+    {% for characteristic in characteristics %}
+        var checkbox = document.getElementById("characteristic-"+{{characteristic.id}})
+        if(checkbox.checked) checkbox.click();
+    {% endfor %}
+  }
+  function Stats() {
+    {% for characteristic in characteristics %}
+        var current = []
+        {% for interactive_system in characteristic.interactive_systems.all %}
+            current.push("{{interactive_system.id}}")
+        {% endfor %}
+        var intersection = so.intersection(final, current)
+        $("#label-characteristic-{{characteristic.id}}").text("{{characteristic.name}} ("+intersection.length+")")
+    {% endfor %}
+  }
+
+  function handleClick() {
+    Reset()
+    {% for characteristic in characteristics %}
+        var checkbox = document.getElementById("characteristic-"+{{characteristic.id}})
+        var current = []
+        if(checkbox.checked){
+        {% for interactive_system in characteristic.interactive_systems.all %}
+            current.push("{{interactive_system.id}}")
+        {% endfor %}
+        var hide = so.difference(final, current)
+            for (let to_hide of hide){
+                    $( "#"+to_hide).hide();
+            }
+            final = so.intersection(final, current)
+        }
+    {% endfor %}
+    Stats()
+}
+
+
+handleClick()
+</script> <!--  Scripts-->
+<script src="/static/js/materialize.js"></script>
+<script src="/static/js/init.js"></script>
+</body>
+{% include "../footer.html" %}

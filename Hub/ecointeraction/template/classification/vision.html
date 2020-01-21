@@ -1,0 +1,100 @@
+{% include "../header.html" %}
+<main id="content" style="padding-left:0">
+  <div class="parallax-container" style="height:200px">
+  </div>
+  <div class="section white black-text">
+      <div class="row">
+        <div class="col s12">
+      <h3 class="header center white indigo-text text-darken-4">Vision passée, présente et future du domaine</h3>
+      <table class="bordered centered">
+        <thead>
+          <tr>
+              <th data-field="id"></th>
+              <th data-field="past" class="black white-text">Passé</th>
+              <th data-field="present" class="grey white-text">Présent</th>
+              <th data-field="future">Futur</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td class="indigo darken-2 white-text">Contexte</td>
+            <td>Supprimer des comportements pour réduire la consommation d'énergie des espaces domestiques.</td>
+            <td><strong>+</strong> Déplacer des comportements pour décaler la consommation d'énergie des espaces domestiques en heures creuses.</td>
+            <td><strong>+</strong> Changer les pratiques pour produire, stocker, partager et consommer de l'énergie verte sur les espaces domestiques, collectifs et publics.</td>
+          </tr>
+          <tr>
+            <td class="red darken-2 white-text">Interface</td>
+            <td>Logiciels manipulables par un seul individu.</td>
+            <td><strong>+</strong> Applications web/mobile manipulables par un seul individu.<br><strong>+</strong> Objets connectées fixes non manipulables mais visibles par plusieurs individus.</td>
+            <td><strong>+</strong> Installations physiques fixes manipulables et visibles par plusieurs individus.</td>
+          </tr>
+          <tr>
+            <td class="green darken-2 white-text">Système</td>
+            <td>Feedback, comparaison temporelle et suggestion.<br> Données historiques sur la consommation d'énergie des batiments.</td>
+            <td><strong>+</strong> Compétition, comparaison sociale, interaction sociale, challenge, progression<br><strong>+</strong>Données historiques et immédiates sur la consommation d'énergie des équipements, des batiments et du voisinage.</td>
+            <td><strong>+</strong> Collaboration, Prévision, Simulation, Comparaison spatiale, Personnalisation, Accomplissement, Récompense<br><strong>+</strong> Données historiques, immédiates et prévisionnelles sur la production, le stockage, le partage et la consommation d'énergie des équipements, des pièces, des batiments, des voisinages, des villes, des régions et des pays.</td>
+          </tr>
+        </tbody>
+      </table>
+        </div>
+      </div>
+  </div> 
+  <div class="parallax-container" style="height:200px">
+  </div>             
+</main>
+  <script src="/static/js/setOps.js"></script>
+<script type="text/javascript">
+so = setOps;
+var final = [];
+
+  function Reset() {
+    final = []
+    {% for interactive_system in interactive_systems %}
+        final.push("{{interactive_system.id}}")
+        $( "#{{interactive_system.id}}").show();
+    {% endfor %}
+  }
+  function UnCheckAll() {
+    {% for characteristic in characteristics %}
+        var checkbox = document.getElementById("characteristic-"+{{characteristic.id}})
+        if(checkbox.checked) checkbox.click();
+    {% endfor %}
+  }
+  function Stats() {
+    {% for characteristic in characteristics %}
+        var current = []
+        {% for interactive_system in characteristic.interactive_systems.all %}
+            current.push("{{interactive_system.id}}")
+        {% endfor %}
+        var intersection = so.intersection(final, current)
+        $("#label-characteristic-{{characteristic.id}}").text("{{characteristic.name}} ("+intersection.length+")")
+    {% endfor %}
+  }
+
+  function handleClick() {
+    Reset()
+    {% for characteristic in characteristics %}
+        var checkbox = document.getElementById("characteristic-"+{{characteristic.id}})
+        var current = []
+        if(checkbox.checked){
+        {% for interactive_system in characteristic.interactive_systems.all %}
+            current.push("{{interactive_system.id}}")
+        {% endfor %}
+        var hide = so.difference(final, current)
+            for (let to_hide of hide){
+                    $( "#"+to_hide).hide();
+            }
+            final = so.intersection(final, current)
+        }
+    {% endfor %}
+    Stats()
+}
+
+
+handleClick()
+</script> <!--  Scripts-->
+<script src="/static/js/materialize.js"></script>
+<script src="/static/js/init.js"></script>
+</body>
+{% include "../footer.html" %}

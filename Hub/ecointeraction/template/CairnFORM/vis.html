@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8' />
+    <title>Simple Bar chart</title>
+    <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment-with-locales.min.js" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.0/js.cookie.min.js" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/13.1.13/Tone.min.js" charset="utf-8"></script>
+
+
+
+
+    <style>
+        body {
+            background-color: #000000;
+            font-family: "Arial", sans-serif;
+        }
+
+        .bar {
+
+        }
+
+        .axis {
+            font-size: 13px;
+        }
+
+        .axis path,
+        .axis line {
+            fill: none;
+            display: none;
+        }
+
+        .label {
+            font-size: 5vh;
+            fill: #ffffff;
+            text-shadow:
+           -1px -1px 0 #000,
+            1px -1px 0 #000,
+            -1px 1px 0 #000,
+             1px 1px 0 #000;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div id="graphic"></div>
+
+    <script>
+    //time_now = moment();
+    var data = []
+    var id = 0
+    var data_scale = 15
+    /*{% for usage in usages %}
+        if ({{usage.timestamp.hour}} > 7 && {{usage.timestamp.hour}} < 18){
+            data.push({"hour":{{usage.timestamp.hour}}, "production":{{usage.production}}, "consumption":{{usage.consumption}} })
+        }
+    {% endfor %}*/
+        //set up svg using margin conventions - we'll need plenty of room on the left for labels
+        var margin = {
+            top: 10,
+            right: 10,
+            bottom: 10,
+            left: 10
+        };
+
+        var width = $(document).width() - margin.left - margin.right,
+            height = $(document).height() - margin.top - margin.bottom;
+
+        var svg = d3.select("#graphic").append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    function init(time_now){
+        console.log("initializing...")
+        /*var player = new Tone.Player({
+        	"url" : "/static/audio/effect.wav",
+        	"autostart" : true,
+        	"reverse" : true,
+        }).toMaster();*/
+
+        time_min = moment(time_now).hour(8).minute(0).second(0);
+        time_max = moment(time_now).hour(17).minute(0).second(0);
+        request = 'http://itame.pythonanywhere.com/CairnFORM/getEnergyUsageFromTo/'+time_min.format('YYYY/MM/DD/HH/mm/ss/')+time_max.format('YYYY/MM/DD/HH/mm/ss/') + '?='+(id++)
+        console.log(request)
+        console.log(Cookies.get())
+         $.getJSON( request, function(data) {
+            console.log(data)
+            var x = d3.scale.linear()
+                .range([0, width/2])
+                .domain([0, 1.]);
+
+            var y = d3.scale.ordinal()
+                .rangeRoundBands([height, 0], 0)
+                .domain(data.map(function (d) {
+                    return moment.parseZone(d.pk).hours();
+                }));
+
+            var bars = svg.selectAll(".bar")
+                .data(data)
+                .enter()
+                .append("g")
+
+            bars.append("rect")
+                .attr("class", "bar")
+                .attr("stroke","white")
+                .attr("stroke-width","2")
+                .attr("fill", function (d) {
+                    f = parseInt(d.fields.production*data_scale) * (1/data_scale)
+                    g = f*255;
+                    w = Math.round(d.fields.consumption *255);
+                    if( moment.parseZone(d.pk).hours() == time_now.hours()) return  "rgba(0,0,255, 1)";
+                    else return  "rgba(" + w + ", " + g + "," + w + " , 1)";
+                })
+                .attr("y", function (d) {
+                    return y(moment.parseZone(d.pk).hours());
+                })
+                .attr("height", y.rangeBand())
+                .attr("x", function (d) {
+                    f = parseInt(d.fields.production*data_scale) * (1/data_scale)
+                    return width/4  - x(f)/2;
+                } )
+                .attr("width", function (d) {
+                    f = parseInt(d.fields.production*data_scale) * (1/data_scale)
+                    return x(f) +  width/2 ;
+                });
+            var texts = svg.selectAll("p")
+                .data(data)
+                .enter()
+                .append("g")
+
+             texts.append("text")
+                .attr("class", "label")
+                //y position of the label is halfway down the bar
+
+                .attr("dy", ".35em")
+                .attr("text-anchor", "middle")
+                .attr("y", function (d) {
+                    return y(moment.parseZone(d.pk).hours())  + parseInt(y.rangeBand()/2.);
+                })
+                //x position is 3 pixels to the right of the bar
+                .attr("x", function (d) {
+                    return width/2;
+                })
+                .text(function (d) {
+                    return moment.parseZone(d.pk).hours() + "H";
+                });
+            }
+        );
+    }
+function update(time_now){
+        console.log("updating...")
+        duration = 6000
+        time_min = moment(time_now).hour(8).minute(0).second(0);
+        time_max = moment(time_now).hour(17).minute(0).second(0);
+        request = 'http://itame.pythonanywhere.com/CairnFORM/getEnergyUsageFromTo/'+time_min.format('YYYY/MM/DD/HH/mm/ss/')+time_max.format('YYYY/MM/DD/HH/mm/ss/') + '?='+(id++)
+        console.log(request)
+        console.log(Cookies.get())
+         $.getJSON( request, function(data) {
+            console.log(data)
+            var x = d3.scale.linear()
+                .range([0, width/2])
+                .domain([0, 1.]);
+
+            var y = d3.scale.ordinal()
+                .rangeRoundBands([height, 0], .1)
+                .domain(data.map(function (d) {
+                    return moment.parseZone(d.pk).hours();
+                }));
+
+            var bars = svg.selectAll(".bar")
+            .data(data)
+
+            bars.transition()
+            .duration(duration)
+            .attr("fill", function (d) {
+                    f = parseInt(d.fields.production*data_scale) * (1/data_scale)
+                    g = f*255;
+                    w = Math.round(d.fields.consumption *255);
+                    if( moment.parseZone(d.pk).hours() == time_now.hours()) return  "rgba(0,0,255, 1)";
+                    else return  "rgba(" + w + ", " + g + "," + w + " , 1)";
+            })
+            .attr("y", function (d) {
+                    return y(moment.parseZone(d.pk).hours());
+                })
+            .attr("height", y.rangeBand())
+            .attr("x", function (d) {
+                f = parseInt(d.fields.production*data_scale) * (1/data_scale)
+                return width/4  - x(f)/2;
+            } )
+            .attr("width", function (d) {
+                f = parseInt(d.fields.production*data_scale) * (1/data_scale)
+                return x(f) +  width/2 ;
+            });
+            var texts = svg.selectAll(".label")
+                .data(data)
+
+             texts.transition()
+             .duration(duration)
+             .attr("dy", ".35em")
+             .attr("text-anchor", "middle")
+             .attr("y", function (d) {
+                    return y(moment.parseZone(d.pk).hours())  + parseInt(y.rangeBand()/2.);
+                })
+                //x position is 3 pixels to the right of the bar
+             .attr("x", function (d) {
+                    return width/2;
+                })
+             .text(function (d) {
+                    return moment.parseZone(d.pk).hours() + "H";
+                });
+            }
+        );
+    }
+    function deamon(now){
+     let interval = 15
+     let wait  = interval - (now.minutes() % interval)
+     console.log("waiting..."+wait+" minutes")
+     let timerId = setInterval(() => update(moment()), interval * 60000);
+     /*let timeout = setTimeout(function(){
+        sleep(1000);
+        now = moment();
+        update(now);
+        deamon(now);
+
+    }, wait*60000);*/
+    }
+
+    let now = moment()
+    init(now)
+    deamon(now)
+
+    //let timerId = setInterval(() => update( moment()), 12000);
+    </script>
+<!--<script>
+
+var timestamps = []
+var productions1 = []
+var productions2 = []
+{% for usage in usages %}
+    if ({{usage.timestamp.hour}} > 7 && {{usage.timestamp.hour}} < 18){
+        timestamps.push("{{usage.timestamp.year}}-{{usage.timestamp.month}}-{{usage.timestamp.day}} {{usage.timestamp.hour}}:{{usage.timestamp.minute}}:{{usage.timestamp.second}}")
+        productions1.push({{usage.production}}*100)
+        productions2.push(-{{usage.production}}*100)
+    }
+{% endfor %}
+
+tickLabels = []
+tickValues = []
+tickValuesAll = []
+timestamps.forEach(function(element) {
+  tickLabels.push(element);
+  tickValues.push(new Date(element).getTime());
+  tickValuesAll.push(new Date(element).getTime());
+});
+
+tickLabels = Array.from(new Set(tickLabels))
+tickValues = Array.from(new Set(tickValues))
+
+
+var width = $(window).width();
+
+var trace1 = {
+    x: tickValuesAll,
+    y: productions1,
+    name: 'Energy Production',
+    type: 'bar',
+    marker: {
+    color: 'rgba(0,255,0, 1.0)',
+  }
+}
+var trace2 = {
+    x: tickValuesAll,
+    y: productions2,
+    name: 'Energy Production',
+    type: 'bar',
+    marker: {
+    color: 'rgba(0,255,0, 1.0)',
+  }
+}
+
+var data = [trace1, trace2];
+var layout = {
+  xaxis: {
+      type:'date',
+      tickvals: tickValues,
+      ticktext: tickLabels,
+      range: [tickValues[0], tickValues[tickValues.length-1]],
+      autorange: false,
+      showgrid:false,
+      zeroline:false,
+      showline:false,
+      showticklabels:false,
+      autotick:false,
+
+  },
+  yaxis: {
+  range: [-101,101],
+  autorange: false,
+  showgrid:false,
+  zeroline:false,
+  showline:false,
+  showticklabels:false,
+  autotick:false,
+  },
+  showlegend : false,
+  barmode: 'relative',
+  margin: {
+    l: 10,
+    r: 10,
+    b: 10,
+    t: 10,
+    pad: 0
+  },
+}
+
+Plotly.newPlot('usages', data, layout);
+</script>-->
+</body>
+</html>

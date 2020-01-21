@@ -1,0 +1,70 @@
+{% include "../header.html" %}
+<main id="content" style="padding-left:0">
+  <div class="parallax-container" style="height:200px">
+  </div>
+  <div class="section white">
+<div class="row">
+    <form class="col s12">
+      <div class="row">
+        <div class="input-field col s6">
+          <input placeholder="Placeholder" id="first_name" type="text" class="validate">
+          <label for="first_name">First Name</label>
+        </div>
+        <div class="input-field col s6">
+          <input id="last_name" type="text" class="validate">
+          <label for="last_name">Last Name</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <input disabled value="I am not editable" id="disabled" type="text" class="validate">
+          <label for="disabled">Disabled</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="password" type="password" class="validate">
+          <label for="password">Password</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="email" type="email" class="validate">
+          <label for="email">Email</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s12">
+          This is an inline input field:
+          <div class="input-field inline">
+            <input id="email" type="email" class="validate">
+            <label for="email" data-error="wrong" data-success="right">Email</label>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+    </div>
+  <div class="parallax-container" style="height:200px">
+  </div>
+</main>
+<script src="/static/js/materialize.js"></script>
+<script src="/static/js/init.js"></script>
+<script src="/static/js/d3/d3.min.js"></script>
+<script src="/static/js/plotly/dist/plotly.min.js"></script>
+<script src="/static/js/wNumb.js"></script>
+<script src="/static/js/nouislider.min.js"></script>
+<script>
+
+var tooltipSlider = document.getElementById('slider');
+
+noUiSlider.create(tooltipSlider, {
+	start: [20, 80, 120],
+	tooltips: [ false, wNumb({ decimals: 1 }), true ],
+	range: {
+		'min': 0,
+		'max': 200
+	}
+});
+</script>
+{% include "../footer.html" %}

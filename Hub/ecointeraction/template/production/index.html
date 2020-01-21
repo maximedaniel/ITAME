@@ -1,0 +1,442 @@
+{% include "../header.html" %}
+<style>
+
+.local_green_bar {
+  opacity:0.8;
+  fill: LimeGreen;
+}
+
+.local_green_bar:hover {
+  opacity:1;
+}
+.global_grey_bar {
+  opacity:0.8;
+  fill: grey;
+}
+.global_grey_bar:hover {
+  opacity:1;
+}
+.global_green_bar {
+  opacity:0.8;
+  fill: ForestGreen;
+}
+.global_green_bar:hover {
+  opacity:1;
+}
+.local_green_label{
+  font-size : 10px;
+  font-weight: bold;
+}
+.global_green_label{
+  font-size : 10px;
+  font-weight: bold;
+}
+.global_grey_label{
+  font-size : 10px;
+  font-weight: bold;
+}
+
+.axis--x path {
+  display: none;
+}
+.svg-container {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    padding-bottom: 100%; /* aspect ratio */
+    vertical-align: top;
+    overflow: hidden;
+}
+.svg-content-responsive {
+    display: inline-block;
+    position: absolute;
+    top: 10px;
+    left: 0;
+}
+</style>
+<main id="content" style="padding-left:0">
+  <div class="parallax-container" style="height:200px">
+  </div>
+  <div class="section white">
+       <div class="row" id="production_forecast">
+        </div>
+       <div class="row" id="production_overcast">
+        </div>
+       <div class="row" id="storage">
+        </div>
+       <div class="row" id="recharges">
+            {% for renewable_rate in renewable_rates %}
+            <p class="black-text">{{renewable_rate}}</p>
+            {% endfor %}
+            {% for recharge in recharges %}
+            <p class="black">{{recharge}}</p>
+            {% endfor %}
+        </div>
+      </div>
+
+  </div>
+<!--  <div class="section white">
+       <div class="row">
+        <div class="col s12" id="component">
+        {% for productionForecasts in productionForecasts %}
+                    <h3 class="black-text center indigo-text text-darken-2">{{productionForecasts.timestamp}} : {{productionForecasts.factor}} %</h3>
+        {% endfor %}
+        </div>
+      </div>
+  </div>-->
+  <div class="parallax-container" style="height:200px">
+  </div>
+</main>
+<script src="/static/js/materialize.js"></script>
+<script src="/static/js/init.js"></script>
+<script src="/static/js/d3/d3.min.js"></script>
+<script src="/static/js/plotly/dist/plotly.min.js"></script>
+<script>
+
+var timestamps =[]
+var local_greens = []
+var global_greens = []
+var global_greys = []
+var text_local_greens = []
+var text_global_greens = []
+var text_global_greys = []
+
+{% for productionForecast in productionForecasts %}
+    timestamps.push("{{productionForecast.timestamp.year}}-{{productionForecast.timestamp.month}}-{{productionForecast.timestamp.day}}_{{productionForecast.timestamp.hour}}:{{productionForecast.timestamp.minute}}:{{productionForecast.timestamp.second}}")
+    local_greens.push({{productionForecast.local_green}}*100)
+    global_greens.push({{productionForecast.imported_global_green}}*100)
+    global_greys.push({{productionForecast.imported_global_grey}}*100)
+    text_local_greens.push({{productionForecast.local_green}}*100 +"%")
+    text_global_greens.push({{productionForecast.imported_global_green}}*100 +"%")
+    text_global_greys.push({{productionForecast.imported_global_grey}}*100+"%")
+{% endfor %}
+
+
+
+var trace_local_green = {
+  x : timestamps,
+  y : local_greens,
+  text : text_local_greens,
+  hoverinfo : "text+name",
+  fill: 'tonexty',
+  type: 'scatter',
+  mode: 'lines',
+  name : "local green",
+  line: {
+      color: '#64dd17'
+  }
+}
+
+
+var trace_imported_global_green = {
+  x : timestamps,
+  y : global_greens,
+  text : text_global_greens,
+  hoverinfo : "text+name",
+  fill: 'tonexty',
+  type: 'scatter',
+  mode: 'lines',
+  name : "global green",
+  line: {
+      color: '#4caf50'
+  }
+}
+
+var trace_imported_global_grey = {
+  x : timestamps,
+  y : global_greys,
+  text : text_global_greys,
+  hoverinfo : "x+text+name",
+  fill: 'tonexty',
+  type: 'scatter',
+  mode: 'lines',
+  name : "global grey",
+  line: {
+      color: '#9e9e9e'
+  }
+}
+
+var traces = [trace_local_green, trace_imported_global_green, trace_imported_global_grey];
+
+function stackedArea(traces) {
+	for(var i=1; i<traces.length; i++) {
+		for(var j=0; j<(Math.min(traces[i]['y'].length, traces[i-1]['y'].length)); j++) {
+			traces[i]['y'][j] += traces[i-1]['y'][j];
+
+		}
+	}
+	return traces;
+}
+
+var layout = {
+  title: 'Forecast on Energy mix at ESTIA (lattitude : 43.45, longitude : -1.55)',
+  margin: {
+    l: 50,
+    r: 50,
+    b: 200,
+    t: 100,
+    pad: 4
+  },
+};
+
+Plotly.newPlot('production_forecast', stackedArea(traces), layout);
+
+// Production overcast
+
+var timestamps =[]
+var local_greens = []
+var global_greens = []
+var global_greys = []
+var text_local_greens = []
+var text_global_greens = []
+var text_global_greys = []
+
+{% for productionOvercast in productionOvercasts %}
+    timestamps.push("{{productionOvercast.timestamp.year}}-{{productionOvercast.timestamp.month}}-{{productionOvercast.timestamp.day}}_{{productionOvercast.timestamp.hour}}:{{productionOvercast.timestamp.minute}}:{{productionOvercast.timestamp.second}}")
+    local_greens.push({{productionOvercast.local_green}}*100)
+    global_greens.push({{productionOvercast.imported_global_green}}*100)
+    global_greys.push({{productionOvercast.imported_global_grey}}*100)
+    text_local_greens.push({{productionOvercast.local_green}}*100 +"%")
+    text_global_greens.push({{productionOvercast.imported_global_green}}*100 +"%")
+    text_global_greys.push({{productionOvercast.imported_global_grey}}*100+"%")
+{% endfor %}
+
+
+
+var trace_local_green = {
+  x : timestamps,
+  y : local_greens,
+  text : text_local_greens,
+  hoverinfo : "text+name",
+  fill: 'tonexty',
+  type: 'scatter',
+  mode: 'lines',
+  name : "local green",
+  line: {
+      color: '#64dd17'
+  }
+}
+
+
+var trace_imported_global_green = {
+  x : timestamps,
+  y : global_greens,
+  text : text_global_greens,
+  hoverinfo : "text+name",
+  fill: 'tonexty',
+  type: 'scatter',
+  mode: 'lines',
+  name : "global green",
+  line: {
+      color: '#4caf50'
+  }
+}
+
+var trace_imported_global_grey = {
+  x : timestamps,
+  y : global_greys,
+  text : text_global_greys,
+  hoverinfo : "x+text+name",
+  fill: 'tonexty',
+  type: 'scatter',
+  mode: 'lines',
+  name : "global grey",
+  line: {
+      color: '#9e9e9e'
+  }
+}
+
+var traces = [trace_local_green, trace_imported_global_green, trace_imported_global_grey];
+
+function stackedArea(traces) {
+	for(var i=1; i<traces.length; i++) {
+		for(var j=0; j<(Math.min(traces[i]['y'].length, traces[i-1]['y'].length)); j++) {
+			traces[i]['y'][j] += traces[i-1]['y'][j];
+
+		}
+	}
+	return traces;
+}
+
+var layout = {
+  title: 'Overcast on Energy mix at ESTIA (lattitude : 43.45, longitude : -1.55)',
+  margin: {
+    l: 50,
+    r: 50,
+    b: 200,
+    t: 100,
+    pad: 4
+  },
+};
+
+Plotly.newPlot('production_overcast', stackedArea(traces), layout);
+
+
+var timestamps =[]
+var battery_levels = []
+var text_battery_events = []
+var pluggeds = []
+
+{% for batteryEvent in batteryEvents %}
+    timestamps.push("{{batteryEvent.timestamp.year}}-{{batteryEvent.timestamp.month}}-{{batteryEvent.timestamp.day}}_{{batteryEvent.timestamp.hour}}:{{batteryEvent.timestamp.minute}}:{{batteryEvent.timestamp.second}}")
+    battery_levels.push({{batteryEvent.battery_level}})
+    pluggeds.push({{batteryEvent.plugged}})
+    text_battery_events.push("{{batteryEvent.timestamp}} : "+ {{batteryEvent.battery_level}} + "% ("+{{batteryEvent.plugged}}+")")
+{% endfor %}
+
+var trace_battery_level = {
+  x : timestamps,
+  y : battery_levels,
+  text : text_battery_events,
+  fill: 'tonexty',
+  type: 'scatter',
+  name : "battery level",
+  hoverinfo : "text",
+  marker: {
+      color: '#3f51b5'
+  }
+}
+var layout = {
+  title: 'Battery events of MAC address {{user.mac_address}}',
+  margin: {
+    l: 50,
+    r: 50,
+    b: 200,
+    t: 100,
+    pad: 4
+  },
+};
+
+Plotly.newPlot('storage', [trace_battery_level], layout);
+</script>
+<!--
+<script>
+
+var svg = d3.select("#production_forecast"),
+    margin = {top: 20, right: 50, bottom: 20, left: 50},
+    width = 1400 - margin.left - margin.right, // attention svg style !!!
+    height = 250 - margin.top - margin.bottom; // attention svg style !!!
+
+var x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
+    y = d3.scaleLinear().rangeRound([height, 0]);
+
+var g = svg.append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+var data = [];
+        {% for productionForecasts in productionForecasts %}
+        data.push({"timestamp":"{{productionForecasts.timestamp.hour}}:{{productionForecasts.timestamp.minute}}", "local_green":{{productionForecasts.local_green}},"imported_global_green":{{productionForecasts.imported_global_green}},"imported_global_grey":{{productionForecasts.imported_global_grey}}})
+        {% endfor %}
+
+x.domain(data.map(function(d) { return d.timestamp; }));
+y.domain([0, d3.max(data, function(d) { return d.local_green; })]);
+
+g.append("g")
+    .attr("class", "axis axis--x")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(x));
+
+g.append("g")
+    .attr("class", "axis axis--y")
+    .call(d3.axisLeft(y).ticks(10, "%"))
+ .append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 6)
+    .attr("dy", "0.71em")
+    .attr("text-anchor", "end")
+    .text("factor");
+
+var local_green_bar = g.selectAll(".local_green_bar").data(data).enter().append("rect").attr("class", "local_green_bar")
+
+var local_green_bars = local_green_bar.attr("x", function(d) { return x(d.timestamp); })
+      .attr("y", function(d) { return y(d.local_green); })
+      .attr("width", x.bandwidth())
+      .attr("height", function(d) { return height - y(d.local_green); })
+
+
+var global_green_bar = g.selectAll(".global_green_bar").data(data).enter().append("rect").attr("class", "global_green_bar")
+
+var global_green_bars = global_green_bar.attr("x", function(d) { return x(d.timestamp); })
+      .attr("y", function(d) { return  y(d.local_green+d.imported_global_green) })
+      .attr("width", x.bandwidth())
+      .attr("height", function(d) { return height - y(d.imported_global_green); })
+
+
+
+var global_grey_bar = g.selectAll(".global_grey_bar").data(data).enter().append("rect").attr("class", "global_grey_bar")
+
+var global_grey_bars = global_grey_bar.attr("x", function(d) { return x(d.timestamp); })
+      .attr("y", function(d) { return  y(d.local_green+d.imported_global_green+d.imported_global_grey) })
+      .attr("width", x.bandwidth())
+      .attr("height", function(d) { return height - y(d.imported_global_grey); })
+
+
+var local_green_text = g.selectAll(".local_green_label").data(data).enter().append("text").attr("class", "local_green_label")
+
+var local_green_texts = local_green_text
+                .attr("x", function(d) { return x(d.timestamp)+(x.bandwidth()/2); })
+                .attr("y", function(d) { return y(d.local_green/2); })
+                .style("text-anchor", "middle")
+                .text(function(d) { return (d.local_green>0.0)?Math.round(d.local_green*100)+"%":""; });
+
+var global_green_text = g.selectAll(".global_green_label").data(data).enter().append("text").attr("class", "global_green_label")
+
+var global_green_texts = global_green_text
+               .attr("x", function(d) { return x(d.timestamp)+(x.bandwidth()/2); })
+                .attr("y", function(d) { return y(d.local_green+(d.imported_global_green/2)); })
+                .style("text-anchor", "middle")
+                .text(function(d) {  return (d.imported_global_green>0.01)?Math.round(d.imported_global_green*100)+"%":"";});
+
+var global_grey_text = g.selectAll(".global_grey_label").data(data).enter().append("text").attr("class", "global_grey_label")
+
+var global_grey_texts = global_grey_text
+                .attr("x", function(d) { return x(d.timestamp)+(x.bandwidth()/2); })
+                .attr("y", function(d) { return y(d.local_green+d.imported_global_green+(d.imported_global_grey/2)); })
+                .style("text-anchor", "middle")
+                .text(function(d) { return (d.imported_global_grey>0.01)?Math.round(d.imported_global_grey*100)+"%":"";});
+
+
+var svg = d3.select("#storage"),
+    margin = {top: 20, right: 50, bottom: 20, left: 50},
+    width = 1400 - margin.left - margin.right, // attention svg style !!!
+    height = 250 - margin.top - margin.bottom; // attention svg style !!!
+
+var x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
+    y = d3.scaleLinear().rangeRound([height, 0]);
+
+var g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+var data = [];
+        {% for batteryEvent in batteryEvents %}
+        data.push({"timestamp":"{{batteryEvent.timestamp.hour}}:{{batteryEvent.timestamp.minute}}:{{batteryEvent.timestamp.second}}", "battery_level":{{batteryEvent.battery_level}}/100, "plugged":{{batteryEvent.plugged}}})
+        {% endfor %}
+
+x.domain(data.map(function(d) { return d.timestamp; }));
+y.domain([0, d3.max(data, function(d) { return d.battery_level; })]);
+
+g.append("g")
+    .attr("class", "axis axis--x")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(x));
+
+g.append("g")
+    .attr("class", "axis axis--y")
+    .call(d3.axisLeft(y).ticks(10, "%"))
+ .append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 6)
+    .attr("dy", "0.71em")
+    .attr("text-anchor", "end")
+    .text("factor");
+
+var battery_level_bar = g.selectAll(".local_green_bar").data(data).enter().append("rect").attr("class", "local_green_bar")
+
+var battery_level_bars = battery_level_bar.attr("x", function(d) { return x(d.timestamp); })
+      .attr("y", function(d) { return y(d.battery_level); })
+      .attr("width", x.bandwidth())
+      .attr("height", function(d) { return height - y(d.battery_level); })
+
+</script>
+-->
+</body>
+{% include "../footer.html" %}

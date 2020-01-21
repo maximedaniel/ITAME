@@ -1,0 +1,92 @@
+.scholmd-float-caption .scholmd-caption-head {
+    font-weight: 700
+}
+.scholmd-float-caption .scholmd-caption-head-prefix:after {
+    content: "\a0"
+}
+.scholmd-caption-head:after {
+    content: " "
+}
+.scholmd-float {
+    position: relative;
+    width: 100%;
+    padding: 10px 0;
+    margin: 20px auto
+}
+.scholmd-float-content {
+    position: relative;
+    width: 70%;
+    margin: auto;
+    text-align: center;
+    vertical-align: baseline
+}
+.scholmd-widefloat>.scholmd-float-content {
+    width: 90%
+}
+.scholmd-subfig {
+    height: auto;
+    max-width: 100%;
+    padding: 0 5px;
+    margin: 0 auto 5px
+}
+.scholmd-float-caption {
+    width: 90%;
+    padding: 10px 0 5px;
+    margin: 0 auto;
+    text-align: center
+}
+.scholmd-float-caption figcaption {
+    text-align: justify
+}
+.scholmd-float-subcaption {
+    float: left;
+    width: 100%;
+    padding: 5px;
+    margin: 0 auto;
+    text-align: center
+}
+.scholmd-float-subcaption figcaption {
+    text-align: left
+}
+figcaption {
+    display: inline-block
+}
+.scholmd-float-content img {
+    width: 100%
+}
+.scholmd-float-content {
+    overflow-x: auto
+}
+.scholmd-figure>.scholmd-float-content {
+    overflow-x: visible
+}
+html {
+    text-rendering: optimizeLegibility
+}
+.scholmd-float-caption {
+    font-size: 16px;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    -o-hyphens: auto;
+    hyphens: auto;
+    line-height: 1.35;
+    word-wrap: break-word
+}
+.scholmd-float-subcaption {
+    font-size: 14px;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    -o-hyphens: auto;
+    hyphens: auto;
+    line-height: 1.2000000000000002;
+    word-wrap: break-word
+}
+.scholmd-crossref a {
+    color: $link-color;
+}
+.scholmd-crossref a:hover,
+.scholmd-crossref a:focus {
+    color: #404040
+}

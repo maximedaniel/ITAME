@@ -1,0 +1,367 @@
+{% include "../header.html" %}
+<main id="content" class="transparent" style="padding-left:0">
+<div class="section white grey darken-4" style="padding:0;">
+  <img style="display:block; width:100%;height:25vw;object-position: 50% 50%;object-fit: cover;" src="/static/logo/charging-min.png">
+ </div>
+ <div class="section white grey darken-4">
+  <h4 class="header center" style="margin:0px;">Study <i>in vivo</i></h4>
+ </div>
+  <div class="section white ">
+       <div class="row" id="usage">
+        </div>
+       <div class="row" id="charge">
+        </div>
+       <div class="row" id="event">
+        </div>
+  </div>
+  <!--<div class="section white grey darken-4">
+  <h4 class="header center grey-text text-darken-4" style="margin:0px;">CairnFORM</h4>
+ </div>-->
+
+<!--<div class="parallax-container transparent" style="height: 400px;">
+    <div class="parallax"><img src="/static/logo/banner1-min.png"></div>
+</div>-->
+</main>
+<script src="/static/js/materialize.js"></script>
+<script src="/static/js/init.js"></script>
+<script src="/static/js/plotly.min.js"></script>
+<script src="/static/js/chroma.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment-with-locales.min.js" charset="utf-8"></script>
+<script>
+
+var timestamps = []
+var productions = []
+var consumptions = []
+{% for usage in usages %}
+    timestamps.push("{{usage.timestamp.year}}-{{usage.timestamp.month}}-{{usage.timestamp.day}} {{usage.timestamp.hour}}:{{usage.timestamp.minute}}:{{usage.timestamp.second}}")
+    productions.push({{usage.raw_production}}*100)
+    consumptions.push(-{{usage.consumption}}*100)
+{% endfor %}
+
+tickLabels = []
+tickValues = []
+tickValuesAll = []
+timestamps.forEach(function(element) {
+  tickLabels.push(element);
+  tickValues.push(new Date(element).getTime());
+  tickValuesAll.push(new Date(element).getTime());
+});
+
+tickLabels = Array.from(new Set(tickLabels))
+tickValues = Array.from(new Set(tickValues))
+
+
+var width = $(window).width();
+
+var trace1 = {
+    x: tickValuesAll,
+    y: productions,
+    name: 'Energy Production',
+    type: 'bar',
+    marker: {
+    color: 'rgba(0,255,0, 1.0)',
+  }
+}
+/*var trace2 = {
+    x: tickValuesAll,
+    y: consumptions,
+    name: 'Energy Storage',
+    type: 'bar',
+    marker: {
+    color: 'rgba(0,0,255, 1.0)',
+  }
+}*/
+//var data = [trace1, trace2];
+var data = [trace1];
+
+var layout = {
+  xaxis: {
+      title: 'Time',
+      tickcolor: '#000',
+      titlefont: {
+          size:24,
+          color: 'black'
+        },
+      tickfont: {
+          color: 'black'
+        },
+      type:'date',
+      tickvals: tickValues,
+      ticktext: tickLabels,
+      range: [tickValues[0], tickValues[tickValues.length-1]],
+      autorange: false,
+
+  },
+  yaxis: {
+    title: 'Capacity (%)',
+      tickcolor: '#000',
+      titlefont: {
+          size:24,
+          color: 'black'
+        },
+      tickfont: {
+          color: 'black'
+        },
+    range: [0,105],
+  },
+  legend: {
+      font: {
+          color: 'black'
+      },
+  },
+  barmode: 'relative',
+  margin: {
+    l: 100,
+    r: width*0.1,
+    b: 200,
+    t: 50,
+    pad: 0
+  },
+  title: 'Energy Production',
+  titlefont: {
+    "size": 30
+  },
+  /*paper_bgcolor: 'rgba(0,0,0,0)',
+  plot_bgcolor: 'rgba(0,0,0,0)',*/
+}
+
+Plotly.newPlot('usage', data, layout);
+
+
+
+
+var data = {}
+
+{% for event in events %}
+if (!('{{event.username}}' in data)) {
+    data['{{event.username}}'] = {'timestamps':[], 'charge_levels':[]}
+}
+    data['{{event.username}}']['timestamps'].push("{{event.timestamp.year}}-{{event.timestamp.month}}-{{event.timestamp.day}} {{event.timestamp.hour}}:00:00")
+    data['{{event.username}}']['charge_levels'].push({{event.charge_level}})
+{% endfor %}
+
+scale = chroma.scale(['blue', 'yellow', 'red']);
+traces = []
+user_nb = Object.keys(data).length
+user_i = 0
+
+max_y = 0
+
+all_timestamps =[]
+all_charge_levels = []
+Object.keys(data).forEach(function(key) {
+
+    uniq_timestamps = data[key]['timestamps'].filter((x, i, a) => a.indexOf(x) == i)
+    sum_charge_levels =  new Array(uniq_timestamps.length);
+
+    for (var i = 0; i < sum_charge_levels.length; i++) sum_charge_levels[i] = 0;
+
+    for (var i = 0; i < uniq_timestamps.length; i++){
+        timestamp = uniq_timestamps[i]
+        for (var j = 0; j < data[key]['timestamps'].length; j++){
+            if (timestamp == data[key]['timestamps'][j]) sum_charge_levels[i] = Math.min(100, sum_charge_levels[i] + data[key]['charge_levels'][j])
+        }
+    }
+    data[key]['timestamps'] = uniq_timestamps
+    data[key]['charg_levels'] = sum_charge_levels
+    all_timestamps = all_timestamps.concat(uniq_timestamps)
+    all_charge_levels = all_charge_levels.concat(sum_charge_levels)
+
+});
+
+all_uniq_timestamps = all_timestamps.filter((x, i, a) => a.indexOf(x) == i)
+all_sum_charge_levels =  new Array(all_uniq_timestamps.length);
+
+for (var i = 0; i < all_sum_charge_levels.length; i++) all_sum_charge_levels[i] = 0;
+for (var i = 0; i < all_uniq_timestamps.length; i++){
+    timestamp = all_uniq_timestamps[i]
+    for (var j = 0; j < all_timestamps.length; j++){
+        if (timestamp == all_timestamps[j]) all_sum_charge_levels[i] = Math.min(100, all_sum_charge_levels[i] + all_charge_levels[j])
+    }
+}
+
+traces.push({
+    x: all_timestamps,
+    y: all_sum_charge_levels,
+    name: 'C',
+    marker: {
+        color : '#0000FF',
+    },
+    type: 'bar',
+});
+
+
+var layout = {
+  xaxis: {
+      title: 'Time',
+      tickcolor: '#000',
+      titlefont: {
+          size:24,
+          color: 'black'
+        },
+      tickfont: {
+          color: 'black'
+        },
+      tickvals: tickValues,
+      ticktext: tickLabels,
+      range: [tickValues[0], tickValues[tickValues.length-1]],
+      autorange: false,
+      showgrid: false,
+      showline: false,
+
+  },
+  yaxis: {
+    title: 'Max Depth of Charge (%)',
+      tickcolor: '#000',
+      titlefont: {
+          size:24,
+          color: 'black'
+        },
+      tickfont: {
+          color: 'black'
+        },
+    autorange: true,
+  },
+  legend: {
+      font: {
+          color: 'black'
+      },
+  },
+  margin: {
+    l: 100,
+    r: width*0.1,
+    b: 200,
+    t: 50,
+    pad: 0
+  },
+  title: 'Energy Storage',
+  titlefont: {
+    "size": 30
+  },
+}
+
+Plotly.newPlot('charge', traces, layout);
+
+var data = {}
+
+{% for event in events %}
+if (!('{{event.username}}' in data)) {
+    data['{{event.username}}'] = {'timestamps':[], 'battery_levels':[]}
+}
+    data['{{event.username}}']['timestamps'].push("{{event.timestamp.year}}-{{event.timestamp.month}}-{{event.timestamp.day}} {{event.timestamp.hour}}:{{event.timestamp.minute}}:{{event.timestamp.second}}")
+    data['{{event.username}}']['battery_levels'].push({{event.battery_level}})
+{% endfor %}
+
+
+scale = chroma.scale(['blue', 'yellow', 'red']);
+traces = []
+user_nb = Object.keys(data).length
+user_i = 0
+
+Object.keys(data).forEach(function(key) {
+    //console.log(key, data[key]);
+    traces.push({
+        x: data[key]['timestamps'],
+        y: data[key]['battery_levels'],
+        //name: 'user_'+user_i,
+        name: key,
+        marker: {
+            color : scale(user_i/user_nb).brighten().hex(),
+            line: {
+                width : 4,
+                color : scale(user_i/user_nb).brighten().hex(),
+            }
+        },
+        connectgaps:true,
+        type: 'scatter',
+    });
+    user_i++
+});
+
+
+var layout = {
+  xaxis: {
+      title: 'Time',
+      tickcolor: '#000',
+      titlefont: {
+          size:24,
+          color: 'black'
+        },
+      tickfont: {
+          color: 'black'
+        },
+      tickvals: tickValues,
+      ticktext: tickLabels,
+      range: [tickValues[0], tickValues[tickValues.length-1]],
+      autorange: false,
+      showgrid: false,
+      showline: false,
+
+  },
+  yaxis: {
+    title: 'Capacity (%)',
+      tickcolor: '#000',
+      titlefont: {
+          size:24,
+          color: 'black'
+        },
+      tickfont: {
+          color: 'black'
+        },
+    range: [0.,101],
+  },
+  legend: {
+      font: {
+          color: 'black'
+      },
+  },
+  margin: {
+    l: 100,
+    r: width*0.1,
+    b: 200,
+    t: 50,
+    pad: 0
+  },
+  title: 'User',
+  titlefont: {
+    "size": 30
+  },
+  /*paper_bgcolor: 'rgba(0,0,0,0)',
+  plot_bgcolor: 'rgba(0,0,0,0)',*/
+}
+
+console.log(data)
+Plotly.newPlot('event', traces, layout);
+
+/*
+var usage_p = $("#usages").get(0);
+var charge_p = $("#charge").get(0);
+var event_p = $("#events").get(0);
+
+var div_names = ['usages', 'charge', 'events']
+var div_states = {'usages':0, 'charge':0, 'events':0}
+var plots = [usage_p, charge_p, event_p];
+
+var used = 0
+for(var plot of plots){
+  var plots_filtered = plots;
+  plot.on('plotly_hover', function(eventdata){
+    for(var plot_filtered of plots_filtered){
+     Plotly.Fx.hover(plot_filtered,{ xval: eventdata.xvals[0]});
+    }
+  });
+  plot.on('plotly_relayout', function(eventdata){
+      for(div_name of div_names){
+        if(!div_states[div_name]){
+            div_states[div_name]=1
+            console.log("Start: "+Object.values(div_states))
+            Plotly.relayout(div_name, eventdata).then(() => {for(div_name of div_names) div_states[div_name]=0;console.log("End: "+Object.values(div_states));})
+
+        }
+      }
+});
+ }*/
+</script>
+</body>
+{% include "../footer.html" %}

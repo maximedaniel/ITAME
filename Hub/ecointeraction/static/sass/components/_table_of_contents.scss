@@ -1,0 +1,41 @@
+/***************
+    Nav List
+***************/
+.table-of-contents {
+  &.fixed {
+      position: fixed;
+    }
+
+  li {
+    padding: 2px 0;
+  }
+  a {
+    display: inline-block;
+    font-weight: 300;
+    color: darken($secondary-color,30%);
+    padding-left: 20px;
+    height: 1.5rem;
+    line-height: 1.5rem;
+    letter-spacing: .4;
+    display: inline-block;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -ms-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color:$primary-color-light;
+      color: $secondary-color;
+      padding-left: 20px;
+      border-left: 15px solid $secondary-color;
+    }
+    &.active {
+      background-color:$primary-color-light-1;
+      color: $secondary-color;
+      font-weight: 500;
+      padding-left: 18px;
+      border-left: 30px solid $secondary-color;
+    }
+  }
+}

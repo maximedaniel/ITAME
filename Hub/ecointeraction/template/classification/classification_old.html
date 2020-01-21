@@ -1,0 +1,124 @@
+{% include "../header.html" %}
+<body class="black-text white">
+<main id="content" style="padding-left:0">
+  <div class="section white grey darken-4">
+  <h3 class="header center" style="margin:0px;">Classification of {{interactive_systems|length}} Interactive Persuasive Systems for Energy Management</h3>
+  </div>
+
+
+  <!--<ul class="tabs grey darken-3">
+        {% for entity in entities %}
+            <li class="tab"><a href="#tab-{{entity.id}}"><h5>{{entity.name|capfirst}}</h5></a></li>
+        {% endfor %}
+   </ul>-->
+
+  <div class="section black-text white">
+       <div class="row">
+        <div class="col s3" id="component">
+            <div class='section center' id="action">
+                 <a class="waves-effect waves-light btn black darken-4 white-text " id="uncheck_all" onclick="UnCheckAll()">Uncheck all</a>
+            </div>
+          {% for entity in entities %}
+              <div class="section col s12 m12 l12">
+              <div class="divider black black-text"></div>
+                  <h4 class="header center black-text">{{entity.name|capfirst}}</h4>
+                  <div class="divider black black-text"></div>
+                        {% for criterium in entity.criteria.all %}
+                        <div class='col s12 m12 l12' id="criterium-{{criterium.id}}">
+                          <h5 class="header black-text">{{criterium.name|capfirst}}</h5>
+                          {% for characteristic in criterium.characteristics.all %}
+                         <p>
+                             <input type="checkbox"  onclick="handleClick();" id="characteristic-{{characteristic.id}}"/>
+                            <label class="tooltipped" for='characteristic-{{characteristic.id}}' id="label-characteristic-{{characteristic.id}}"  data-position="bottom" data-delay="50" data-tooltip="{{characteristic.description}}"></label>
+                         </p>
+                          {% endfor %}
+                         </div>
+                        {% endfor %}
+             </div>
+          {% endfor %}
+        </div>
+        <div class="col s9" id="application">
+          {% for interactive_system in interactive_systems %}
+              <div class='col s12 m6 l3' id="{{ interactive_system.id }}">
+              <!--<a class="modal-trigger" href="#modal-{{ interactive_system.id }}">-->
+              <a class="modal-trigger" href="./{{ interactive_system.id }}">
+                <div class='card field'>
+                  <div class='card-image'>
+                    <img src='/static/img/{{ interactive_system.name|lower|cut:" "|cut:"-"|cut:"'"|cut:"!"}}.png'>
+                    <span class='card-title'>{{ interactive_system.name }}</span>
+                  </div>
+                </div>
+                </a>
+              </div>
+              <div id="modal-{{ interactive_system.id }}" class="modal black white-text">
+                   <div class="modal-content">
+                    <h4 class="white-text">{{ interactive_system.name }}</h4>
+                    <h5 class="white-text">Abstract</h5>
+                    <p class="grey-text text-lighten-1">{{ interactive_system.abstract}}</p>
+                    <h5 class="white-text">Reference</h5>
+                    <p class="grey-text text-lighten-1">{{ interactive_system.reference}}</p>
+                </div>
+               <div class="modal-footer black white-text">
+                  <a href="#!" class="modal-action modal-close waves-effect waves-dark btn-flat grey darken-1 white-text">Ok</a>
+                </div>
+              </div>
+          {% endfor %}
+        </div>
+      </div>
+   </div>
+</main>
+  <script src="/static/js/setOps.js"></script>
+<script type="text/javascript">
+so = setOps;
+var final = [];
+
+  function Reset() {
+    final = []
+    {% for interactive_system in interactive_systems %}
+        final.push("{{interactive_system.id}}")
+        $( "#{{interactive_system.id}}").show();
+    {% endfor %}
+  }
+  function UnCheckAll() {
+    {% for characteristic in characteristics %}
+        var checkbox = document.getElementById("characteristic-"+{{characteristic.id}})
+        if(checkbox.checked) checkbox.click();
+    {% endfor %}
+  }
+  function Stats() {
+    {% for characteristic in characteristics %}
+        var current = []
+        {% for interactive_system in characteristic.interactive_systems.all %}
+            current.push("{{interactive_system.id}}")
+        {% endfor %}
+        var intersection = so.intersection(final, current)
+        $("#label-characteristic-{{characteristic.id}}").text("{{characteristic.name}} ("+intersection.length+")")
+    {% endfor %}
+  }
+
+  function handleClick() {
+    Reset()
+    {% for characteristic in characteristics %}
+        var checkbox = document.getElementById("characteristic-"+{{characteristic.id}})
+        var current = []
+        if(checkbox.checked){
+        {% for interactive_system in characteristic.interactive_systems.all %}
+            current.push("{{interactive_system.id}}")
+        {% endfor %}
+        var hide = so.difference(final, current)
+            for (let to_hide of hide){
+                    $( "#"+to_hide).hide();
+            }
+            final = so.intersection(final, current)
+        }
+    {% endfor %}
+    Stats()
+}
+
+
+handleClick()
+</script> <!--  Scripts-->
+<script src="/static/js/materialize.js"></script>
+<script src="/static/js/init.js"></script>
+</body>
+{% include "../footer.html" %}

@@ -1,0 +1,193 @@
+{% include "../header.html" %}
+<!--<div id="loader">
+    <div class="section center">
+        <div class="row center">
+          <div class="col s12 m12 l12 center">
+              <div class="preloader-wrapper big active center">
+                <div class="spinner-layer spinner-black-only">
+                  <div class="circle-clipper left">
+                    <div class="circle"></div>
+                  </div><div class="gap-patch">
+                    <div class="circle"></div>
+                  </div><div class="circle-clipper right">
+                    <div class="circle"></div>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </div>
+    </div>
+</div>-->
+<div id="body">
+<main id="content"  class="transparent"  style="padding-left:0">
+<div class="section white">
+  <img style="display:block; width:100%;height:25vw;object-position: 50% 50%;object-fit: cover;" src="/static/logo/earthnight-min.jpg">
+ </div>
+  <div class="section black-text white">
+  <h4 class="center" style="margin:0px;font-weight:bold;">Classification of {{interactive_systems|length}} Interactive Systems for Energy Management</h4>
+  </div>
+  <ul class="tabs black-text white center">
+        {% for entity in entities %}
+                <li class="tab "><a href="#tab-{{entity.id}}"><h5 style="font-weight:bold;">{{entity.name|capfirst}}</h5></a></li>
+        {% endfor %}
+   </ul>
+  <div class="section white" style="padding:0;padding-left:10px;padding-right:10px;">
+      {% for entity in entities %}
+          <div id="tab-{{entity.id}}" class="col s12 m12 l12 white black-text">
+            <div class="row">
+                {% for criterium in entity.criteria.all %}
+                <div class='col s12 m6 l3' style="height:300px;" id="criterium-{{criterium.id}}">
+                  <h5 class="black-text">{{criterium.name|capfirst}}</h5>
+                  {% for characteristic in criterium.characteristics.all %}
+                 <p style="margin:0; padding:0;line-height:1.6;">
+                 <label>
+                 <input type="checkbox"  onclick="handleClick();" id="characteristic-{{characteristic.id}}"/>
+                     <span class="black-text tooltipped" for='characteristic-{{characteristic.id}}' id="label-characteristic-{{characteristic.id}}"  data-position="bottom" data-delay="50" data-tooltip="{{characteristic.description}}">{{characteristic.name}}</span>
+                 </label>
+                 </p>
+                  {% endfor %}
+                </div>
+                {% endfor %}
+            </div>
+          </div>
+      {% endfor %}
+
+        <div class='section center' id="action">
+             <a class="waves-effect waves-light btn black darken-4 white-text " id="uncheck_all" onclick="UnCheckAll()">Uncheck all</a>
+        </div>
+       <div class="row">
+        <div class="col s12" id="application">
+
+          {% for interactive_system in interactive_systems %}
+              <div class='col s12 m6 l3' id="{{ interactive_system.id }}">
+              <!--<a class="modal-trigger" href="#modal-{{ interactive_system.id }}">-->
+              <a class="modal-trigger" href="./{{ interactive_system.id }}">
+                <div class='card small sip'>
+                  <div class='card-image'>
+                    <img src='/static/img/{{ interactive_system.name|lower|cut:" "|cut:"-"|cut:"'"|cut:"!"}}.png'>
+                    <span class='card-title'>{{ interactive_system.name }}</span>
+                  </div>
+                </div>
+                </a>
+              </div>
+              <div id="modal-{{ interactive_system.id }}" class="modal black white-text">
+                   <div class="modal-content">
+                    <h4 class="white-text">{{ interactive_system.name }}</h4>
+                    <h5 class="white-text">Abstract</h5>
+                    <p class="grey-text text-lighten-1">{{ interactive_system.abstract}}</p>
+                    <h5 class="white-text">Reference</h5>
+                    <p class="grey-text text-lighten-1">{{ interactive_system.reference}}</p>
+                </div>
+               <div class="modal-footer black white-text">
+                  <a href="#!" class="modal-action modal-close waves-effect waves-dark btn-flat grey darken-1 white-text">Ok</a>
+                </div>
+              </div>
+          {% endfor %}
+        </div>
+      </div>
+   </div>
+</main>
+  <script src="/static/js/setOps.js"></script>
+<script type="text/javascript">
+Array.prototype.unique = function() {
+  return this.filter(function (value, index, self) {
+    return self.indexOf(value) === index;
+  });
+}
+
+so = setOps;
+var all = [];
+{% for interactive_system in interactive_systems %}
+    all.push("{{interactive_system.id}}")
+    $( "#{{interactive_system.id}}").show();
+{% endfor %}
+
+var current = [];
+
+  function Reset() {
+    current = []
+    {% for interactive_system in interactive_systems %}
+        $( "#{{interactive_system.id}}").show();
+    {% endfor %}
+  }
+  function UnCheckAll() {
+    {% for characteristic in characteristics %}
+        var checkbox = document.getElementById("characteristic-"+{{characteristic.id}})
+        if(checkbox.checked) checkbox.click();
+    {% endfor %}
+  }
+  function Stats() {
+    {% for characteristic in characteristics %}
+
+        var tmp = [];
+        {% for interactive_system in characteristic.interactive_systems.all %}
+            tmp.push("{{interactive_system.id}}")
+        {% endfor %}
+
+        var suffix = "{{characteristic.name}} (<b>"+current.length+"</b>"
+        var checkbox = document.getElementById("characteristic-"+{{characteristic.id}})
+        if(checkbox.checked){
+            //console.log('tmp : ', tmp.length)
+            //console.log('current : ', current.length)
+            //console.log('difference : ', so.difference(current, tmp).length)
+            //console.log('intersection : ', so.difference(current, tmp).length)
+            suffix+= ")"
+
+        }
+        else{
+            suffix+= "<h7 style='color:red;font-weight:bold;'>  -" + (current.length-so.intersection(tmp, current).length) + "</h7>)"
+        }
+        $("#label-characteristic-{{characteristic.id}}").html(suffix)
+
+    {% endfor %}
+  }
+
+  function handleClick() {
+    Reset()
+    current = all.slice()
+    {% for characteristic in characteristics %}
+        var checkbox = document.getElementById("characteristic-"+{{characteristic.id}})
+        var tmp = []
+        if(checkbox.checked){
+        {% for interactive_system in characteristic.interactive_systems.all %}
+            tmp.push("{{interactive_system.id}}")
+        {% endfor %}
+        current = so.intersection(tmp, current)
+        }
+   {% endfor %}
+
+    var hide = so.difference(all, current)
+            for (let to_hide of hide){
+                    $( "#"+to_hide).hide();
+            }
+            for (let to_show of current){
+                        $( "#"+to_show).show();
+            }
+    Stats()
+}
+
+
+handleClick()
+</script> <!--  Scripts-->
+<script src="/static/js/materialize.js"></script>
+<script>
+
+    $(document).ready(function(){
+    $('#body').show();
+    $('.tabs').tabs();
+    tab_id = $( "li.tab:first a" ).attr('href').substring(1);
+    $('.tabs').tabs('select', tab_id);
+    /*$(window).on('load', function(){
+        $('#loader').animate({opacity:0},1000, function(){
+            $('#loader').hide();
+            $('#body').show();
+            $('#body').css('z-index','-9999');
+            $('#body').css('opacity','0');
+            $('#body').animate({opacity:1},1000)
+        });
+      });*/
+  });
+
+  // state of the art - /static/logo/earthnight-min.jpg
+</script>
+{% include "../footer.html" %}

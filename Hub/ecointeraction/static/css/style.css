@@ -1,0 +1,171 @@
+/* Custom Stylesheet */
+/**
+ * Use this file to override Materialize files so you can update
+ * the core Materialize files in the future
+ *
+ * Made By MaterializeCSS.com
+ */
+
+nav ul a,
+nav .brand-logo {
+  color: #444;
+}
+
+p {
+  line-height: 2rem;
+}
+
+.button-collapse {
+  color: #26a69a;
+}
+
+.parallax-container {
+  min-height: 380px;
+  line-height: 0;
+  height: auto;
+  color: rgba(255,255,255,.9);
+}
+  .parallax-container .section {
+    width: 100%;
+  }
+
+@media only screen and (max-width : 992px) {
+  .parallax-container .section {
+    position: absolute;
+    top: 40%;
+  }
+  #index-banner .section {
+    top: 10%;
+  }
+}
+
+@media only screen and (max-width : 600px) {
+  #index-banner .section {
+    top: 0;
+  }
+}
+
+.icon-block {
+  padding: 0 15px;
+}
+.icon-block .material-icons {
+  font-size: inherit;
+}
+
+footer.page-footer {
+  margin: 0;
+}
+.caption {
+
+    position: absolute;
+    left:0;
+    width:100px;
+    text-align:center;
+    vertical-align: text-top;
+   /* font-weight:bold;*/
+   /* margin-top:0;*/
+    margin-bottom:0;
+    margin-left:-25px;
+    -webkit-filter: opacity(0%); /* Safari 6.0 - 9.0 */
+    filter: opacity(0%);
+    -webkit-transition: filter 0.3s ease;
+    -moz-transition: filter 0.3s ease;
+    -o-transition: filter 0.3s ease;
+    transition: filter 0.3s ease;
+}
+.logo:hover .caption {
+    -webkit-filter: opacity(100%); /* Safari 6.0 - 9.0 */
+    filter: opacity(100%);
+    -webkit-transition: filter 0.3s ease;
+    -moz-transition: filter 0.3s ease;
+    -o-transition: filter 0.3s ease;
+    transition: filter 0.3s ease;
+}
+.sip {
+    -webkit-transform: scale(1); /* Safari 6.0 - 9.0 */
+    transform: scale(1);
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+.sip:hover {
+    -webkit-transform: scale(1.1); /* Safari 6.0 - 9.0 */
+    transform: scale(1.1);
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+.logo {
+    -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+    filter: grayscale(100%);
+    -webkit-transition: filter 0.3s ease;
+    -moz-transition: filter 0.3s ease;
+    -o-transition: filter 0.3s ease;
+    transition: filter 0.3s ease;
+}
+.logo:hover {
+    -webkit-filter: grayscale(0%); /* Safari 6.0 - 9.0 */
+    filter: grayscale(0%);
+    -webkit-transition: filter 0.3s ease;
+    -moz-transition: filter 0.3s ease;
+    -o-transition: filter 0.3s ease;
+    transition: filter 0.3s ease;
+}
+.hidden {
+    opacity:0;
+    -webkit-transition: opacity 0.5s ease;
+    -moz-transition: opacity 0.5s ease;
+    -o-transition: opacity 0.5s ease;
+    transition: opacity 0.5s ease;
+    z-index:-2;
+}
+.visible {
+    opacity:1;
+    -webkit-transition: opacity 0.5s ease;
+    -moz-transition: opacity 0.5s ease;
+    -o-transition: opacity 0.5s ease;
+    transition: opacity 0.5s ease;
+    z-index:-1;
+}
+.bg{
+    /* -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
+    -webkit-transition: filter 0.3s ease;
+    -moz-transition: filter 0.3s ease;
+    -o-transition: filter 0.3s ease;
+    transition: filter 0.3s ease;
+    width:100%;
+    overflow:hidden;
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%, -50%);*/
+}
+.bg:active{
+     -webkit-filter: grayscale(0%); /* Safari 6.0 - 9.0 */
+    filter: grayscale(0%);
+    -webkit-transition: filter 0.3s ease;
+    -moz-transition: filter 0.3s ease;
+    -o-transition: filter 0.3s ease;
+    transition: filter 0.3s ease;
+   /* width:100%;
+    overflow:hidden;
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%, -50%);*/
+}
+.landscape {
+    -webkit-transition: background  0.3s ease;
+    -moz-transition: background  0.3s ease;
+    -o-transition: background  0.3s ease;
+    transition: background  0.3s ease;
+    background: no-repeat center center ;/*fixed;*/
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}

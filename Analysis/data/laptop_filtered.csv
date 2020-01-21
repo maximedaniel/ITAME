@@ -1,0 +1,18 @@
+timestamp,username,storage,usage
+2020-01-20 09:00:14.536,m.daniel,10,battery_sector
+2020-01-20 09:05:38.431,m.daniel,30,battery_sector
+2020-01-20 09:10:07.845,m.daniel,40,battery_sector
+2020-01-20 09:16:16.636,m.daniel,50,battery_sector
+2020-01-20 09:30:16.737,m.daniel,49,battery
+2020-01-20 09:35:14.737,m.daniel,40,battery
+2020-01-20 09:40:11.274,m.daniel,45,battery_sector
+2020-01-20 09:45:13.209,m.daniel,50,battery_sector
+2020-01-20 09:50:27.728,m.daniel,90,battery_sector
+2020-01-20 09:55:29.529,m.daniel,91,battery_sector
+2020-01-20 10:00:31.250,m.daniel,92,battery_sector
+2020-01-20 10:05:33.026,m.daniel,93,battery_sector
+2020-01-20 10:10:34.910,m.daniel,94,battery_sector
+2020-01-20 10:15:36.476,m.daniel,95,battery_sector
+2020-01-20 10:20:38.133,m.daniel,96,battery_sector
+2020-01-20 10:25:39.763,m.daniel,97,battery_sector
+2020-01-20 10:30:41.426,m.daniel,98,battery_sector

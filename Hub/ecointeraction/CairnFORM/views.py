@@ -249,6 +249,9 @@ def post(request):
                 username = jsonEvent['Username'],
                 plugged = jsonEvent['Plugged'],
                 near = jsonEvent['Near'],
+                batteryLevel = jsonEvent['BatteryLevel'],
+                chargeLevel = jsonEvent['ChargeLevel'],
+                dischargeLevel = jsonEvent['DischargeLevel'],
                 availability = jsonEvent['Availability'],
                 batteryRechargeTime = jsonEvent['BatteryRechargeTime'],
                 batteryStatus = jsonEvent['BatteryStatus'],
@@ -305,6 +308,7 @@ def getLaptopFromTo(request, year1, month1, day1, hour1, minute1, second1, year2
     laptops = laptops.exclude(timestamp__lt=min_frame)
     laptops = laptops.exclude(timestamp__gt=max_frame)
     laptops = laptops.order_by('timestamp')
+
     if len(laptops) > 0 :
         return HttpResponse(serializers.serialize("json", laptops))
     else :

@@ -16,6 +16,8 @@ const DELAY_BETWEEN_LAPTOP_EVENT = 5 //minutes
 const MIN_DELAY_BETWEEN_LAPTOP_EVENT = 2 //minutes
 const FILENAME_FILTERED_LAPTOP = './data/laptop_filtered.csv';
 const FILENAME_FILTERED_FORECAST = './data/forecast_filtered.csv';
+const HOUR_MIN = 0
+const HOUR_MAX = 23
 
 DEBUG && console.log('Loading files...');
 const laptopFile = fs.readFileSync(FILENAME_FILTERED_LAPTOP, 'utf8')
@@ -65,11 +67,11 @@ forecastDaySet = forecastDaySet.filter(forecastDay => {
 laptopList = laptopList.filter(laptop => forecastDaySet.includes(moment(laptop.timestamp).hours(0).minutes(0).seconds(0).format()))
 forecastList = forecastList.filter(forecast => forecastDaySet.includes(moment(forecast.timestamp).hours(0).minutes(0).seconds(0).format()))
 
-startHourDays = laptopList.map(laptop => moment(laptop.timestamp).hours(0).minutes(0).seconds(0).milliseconds(0))
+startHourDays = laptopList.map(laptop => moment(laptop.timestamp).hours(HOUR_MIN).minutes(0).seconds(0).milliseconds(0))
 startHourDays = startHourDays.filter((v, i) => {
     return startHourDays.findIndex(candidate => v.isSame(candidate)) == i
 });
-endHourDays = laptopList.map(laptop => moment(laptop.timestamp).hours(23).minutes(59).seconds(59).milliseconds(0))
+endHourDays = laptopList.map(laptop => moment(laptop.timestamp).hours(HOUR_MAX).minutes(59).seconds(59).milliseconds(0))
 endHourDays = endHourDays.filter((v, i) => {
     return endHourDays.findIndex(candidate => v.isSame(candidate)) == i
 });

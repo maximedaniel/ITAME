@@ -11,14 +11,17 @@ class EnergyUsage(models.Model):
     raw_production = models.FloatField(default=-1)
 
     def __str__(self):
-        return self.timestamp.strftime('%Y-%m-%d %H:%M') + ", raw_production (wh) : "+str(self.raw_production) + ", production (wh) : "+str(self.production)+", consumption (wh) : "+str(self.consumption)
+        return self.timestamp.strftime('%Y-%m-%d %H:%M') + ", raw_production (% capacity) : "+str(self.raw_production) + ", production (% capacity) : "+str(self.production)+", consumption (% of 50% depth charge) : "+str(self.consumption)
 
 
 class Laptop(models.Model):
     timestamp = models.DateTimeField(primary_key=True)
     username = models.CharField(max_length=60, null=True)
-    plugged =  models.IntegerField()
+    plugged =  models.IntegerField(null=True)
     near =  models.IntegerField(null=True)
+    batteryLevel =  models.IntegerField(null=True)
+    chargeLevel =  models.IntegerField(null=True)
+    dischargeLevel =  models.IntegerField(null=True)
     availability = models.IntegerField(null=True)
     batteryRechargeTime = models.IntegerField(null=True)
     batteryStatus = models.IntegerField(null=True)

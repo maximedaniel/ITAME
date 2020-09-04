@@ -1,0 +1,1630 @@
+<!DOCTYPE html>
+<!--<html lang="en" style="background: url(/static/sedyl/static/logo/smartcity.jpg) no-repeat center center fixed;-webkit-background-size: cover;-moz-background-size: cover;-o-background-size: cover;background-size: cover;">-->
+<html lang="en">
+<meta charset="utf-8">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+  <title>ITAME</title>
+  <meta name="description" content="ITAME est un projet de Recherche en Interaction Homme-Machine (IHM) démarré en Octobre 2015 qui s’intéresse aux Interfaces Utilisateur Tangibles (TUI), aux Technologies Persuasives et aux problématiques présentes et futures de gestion de l'énergie." />
+  <meta name="keywords" content="itame, interaction homme-machine, interface utilisateur tangible, énergie, lieu public, lieu semi-public, technologie persuasive, ihm, tui, estia, labri, université de bordeaux, région aquitaine" />
+  <meta name="author" content="Maxime Daniel">
+  <meta name="robots" content="index, follow">
+  <meta name="revisit-after" content="1 month">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="/static/sedyl/static/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <script src="/static/sedyl/static/js/jquery.js"></script>
+  <script src="/static/sedyl/static/js/jquery-ui.js"></script>
+  <script type="text/javascript" async  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=MML_CHTML"></script>
+  <!--<link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>-->
+</head>
+<body class="white-text">
+<header style="padding-left:0">
+  <nav>
+    <div class="nav-wrapper black">
+    <a href=".." class="brand-logo center"><img id="front-page-logo" src="/static/sedyl/static/logo/itame.png" width="350px" style="margin-top:10px;"></a>
+    </div>
+  </nav>
+</header>
+<main id="content" style="padding-left:0">
+  <div class="section white grey darken-3">
+  <h5 class="header center" style="margin:0px;"><strong>SEDYL</strong><br>Shifting Energy Demand with Your Laptop</h5>
+  </div>
+  <div class="section white grey-text text-darken-3">
+      <div class="row">
+       <div class="col s12 m12 l4">
+          <div class ="col s12 m12 l12">
+                <div class="file-field input-field col s12 m12 l12">
+                  <div class="btn white-text black">
+                    <span>LOAD</span>
+                    <input type="file" id="file-paramaters" accept=".json">
+                  </div>
+                  <div class="file-path-wrapper">
+                    <input class="file-path validate" type="text" id="file-path-paramaters">
+                  </div>
+                </div>
+          </div>
+          <ul class="collapsible col s12 m12 l12" data-collapsible="expandable" style="border:none; box-shadow: none;">
+            <li>
+              <div class="collapsible-header white-text grey darken-3 col s12 m12 l12" style="border:none"><i class="material-icons">settings</i>Laptop Configuration</div>
+              <div class="collapsible-body col s12 m12 l12 border">
+              <div class="input-field col s6 m6 l6 tooltipped" data-position="top" data-delay="50" data-tooltip="Rated capacity of the battery.">
+                          <input id="input-battery-qrated" type="number" value="8.8" step="0.1" required>
+                          <label for="input-battery-qrated"><i>Qrated (Ah)</i></label>
+                        </div>
+                        <div class="input-field col s6 m6 l6 tooltipped" data-position="top" data-delay="50" data-tooltip="Nominal voltage of the battery and required for computation.">
+                          <input id="input-battery-vnom" type="number" value="11.1" step="0.1" required>
+                          <label for="input-battery-vnom"><i>Vnom (V)</i></label>
+                        </div>
+                      <div class="input-field col s6 m6 l6 tooltipped" data-position="top" data-delay="50" data-tooltip="Discharge current of the battery.">
+                        <input id="input-battery-adischarge" type="number" value="1.4185" step="0.1" required>
+                        <label for="input-battery-adischarge"><i>Adischarge (A)</i></label>
+                      </div>
+                        <div class="input-field col s6 m6 l6 tooltipped" data-position="top" data-delay="50" data-tooltip="Charge current of the battery.">
+                          <input id="input-battery-acharge" type="number" value="4.4" step="0.1" required>
+                          <label for="input-battery-acharge"><i>Acharge (A)</i></label>
+                        </div>
+                        <div class="input-field col s6 m6 l6 tooltipped" data-position="top" data-delay="50" data-tooltip="Minimum state of charge.">
+                          <input id="input-battery-soc-min" type="number" value="1" step="1" min="10" required>
+                          <label for="input-battery-soc-min"><i>SOCmin (%)</i></label>
+                        </div>
+                        <div class="input-field col s6 m6 l6 tooltipped" data-position="top" data-delay="50" data-tooltip="Maximum state of charge.">
+                          <input id="input-battery-soc-max" type="number" value="100" step="1" min="10" required>
+                          <label for="input-battery-soc-max"><i>SOCmax (%)</i></label>
+                        </div>
+
+                          <div class="input-field col s6 m6 l6 tooltipped" data-position="top" data-delay="50" data-tooltip="State of charge.">
+                            <input id="input-battery-soc" type="number" value="50" step="1" min="10" required>
+                            <label for="input-battery-soc"><i>SOC (%)</i></label>
+                          </div>
+                        <div class="input-field col s6 m6 l6 tooltipped" data-position="top" data-delay="50" data-tooltip="State of charge of renewable energy.">
+                          <input id="input-battery-socenr" type="number" value="25" step="1" min="0" required>
+                          <label for="input-battery-socenr"><i>SOCenr (%)</i></label>
+                        </div>
+                          <div class="input-field col s6 m6 l6 tooltipped" data-position="top" data-delay="50" data-tooltip="Energy efficiency of the battery.">
+                            <input id="input-battery-efficiency" type="number" value="90" step="1" min="10" required>
+                            <label for="input-battery-efficiency"><i>Battery Efficiency (%)</i></label>
+                          </div>
+                        <div class="input-field col s6 m6 l6 tooltipped" data-position="top" data-delay="50" data-tooltip="Energy efficiency of the laptop charger.">
+                          <input id="input-laptop-efficiency" type="number" value="80" step="1" min="0" required>
+                          <label for="input-laptop-efficiency"><i>Power Supply Efficiency (%)</i></label>
+                        </div>
+              </div>
+              <div class="col s12 m12 l12"><br></div>
+            </li>
+            <li>
+              <div class="collapsible-header white-text grey darken-3 col s12 m12 l12" style="border:none"><i class="material-icons">insert_chart</i>Energy Production Mix Data</div>
+              <div class="collapsible-body col s12 m12 l12 border">
+                <div class="input-field col s12">
+                  <select class="icons" id="selector-production" onchange="select()">
+                    <option value="0" selected disabled>Choose a day profil</option>
+                    <option value="1" data-icon="/static/sedyl/static/img/scenario1.png" class="left" selected>16 May 2012, Bidart, France</option>
+                    <option value="2" data-icon="/static/sedyl/static/img/scenario2.png" class="left">16 Avril 2012, Bidart, France</option>
+                    <option value="3" data-icon="/static/sedyl/static/img/scenario3.png" class="left">26 August 2012, Bidart, France</option>
+                    <option value="4" data-icon="/static/sedyl/static/img/scenario4.png" class="left">10 June 2012, Bidart, France</option>
+                    <option value="5" data-icon="/static/sedyl/static/img/scenario5.png" class="left">19 October 2012, Bidart, France</option>
+                  </select>
+                  <label>Profil</label>
+                </div>
+                <div class="input-field col s12">
+                  <textarea class="materialize-textarea" id="input-production"></textarea>
+                    <label for="textarea1">&ltHH:mm&gt, &ltfloat&gt</label>
+                  </div>
+
+                <div class="input-field col s12 hide">
+                  <textarea class="materialize-textarea" id="input-production1">00:00, 0.05
+01:00, 0.05
+02:00, 0.05
+03:00, 0.05
+04:00, 0.05
+05:00, 0.05
+06:00, 0.05
+07:00, 0.05
+08:00, 0.102
+09:00, 0.337
+10:00, 0.595
+11:00, 0.797
+12:00, 0.924
+13:00, 0.991
+14:00, 1.0
+15:00, 0.962
+16:00, 0.875
+17:00, 0.737
+18:00, 0.524
+19:00, 0.315
+20:00, 0.108
+21:00, 0.070
+22:00, 0.05
+23:00, 0.05</textarea>
+                  <textarea class="materialize-textarea" id="input-production2">00:00, 0.05
+01:00, 0.05
+02:00, 0.05
+03:00, 0.05
+04:00, 0.05
+05:00, 0.05
+06:00, 0.05
+07:00, 0.05
+08:00, 0.052
+09:00, 0.065
+10:00, 0.113
+11:00, 0.266
+12:00, 0.296
+13:00, 0.855
+14:00, 1.0
+15:00, 1.0
+16:00, 0.954
+17:00, 0.786
+18:00, 0.582
+19:00, 0.312
+20:00, 0.119
+21:00, 0.061
+22:00, 0.05
+23:00, 0.05</textarea>
+</div>
+<div class="input-field col s12 hide">
+                  <!--<textarea class="materialize-textarea" id="input-production2">00:00, 0.05
+01:00, 0.05
+02:00, 0.05
+03:00, 0.05
+04:00, 0.05
+05:00, 0.05
+06:00, 0.05
+07:00, 0.05
+08:00, 0.102
+09:00, 0.337
+10:00, 0.595
+11:00, 0.757
+12:00, 0.724
+13:00, 0.541
+14:00, 0.268
+15:00, 0.162
+16:00, 0.137
+17:00, 0.124
+18:00, 0.137
+19:00, 0.124
+20:00, 0.108
+21:00, 0.07
+22:00, 0.05
+23:00, 0.05</textarea>-->
+                  <textarea class="materialize-textarea" id="input-production3">00:00, 0.05
+01:00, 0.05
+02:00, 0.05
+03:00, 0.05
+04:00, 0.05
+05:00, 0.05
+06:00, 0.05
+07:00, 0.05
+08:00, 0.069
+09:00, 0.125
+10:00, 0.481
+11:00, 0.694
+12:00, 0.344
+13:00, 0.846
+14:00, 0.768
+15:00, 0.929
+16:00, 0.844
+17:00, 0.712
+18:00, 0.526
+19:00, 0.292
+20:00, 0.097
+21:00, 0.052
+22:00, 0.05
+23:00, 0.05</textarea>
+                  </div>
+
+
+                <div class="input-field col s12 hide">
+                  <!--<textarea class="materialize-textarea" id="input-production3">00:00, 0.05
+01:00, 0.05
+02:00, 0.05
+03:00, 0.05
+04:00, 0.05
+05:00, 0.05
+06:00, 0.05
+07:00, 0.05
+08:00, 0.108
+09:00, 0.124
+10:00, 0.137
+11:00, 0.124
+12:00, 0.137
+13:00, 0.162
+14:00, 0.268
+15:00, 0.541
+16:00, 0.724
+17:00, 0.757
+18:00, 0.595
+19:00, 0.337
+20:00, 0.102
+21:00, 0.07
+22:00, 0.05
+23:00, 0.05</textarea>-->
+                  <textarea class="materialize-textarea" id="input-production4">00:00, 0.05
+01:00, 0.05
+02:00, 0.05
+03:00, 0.05
+04:00, 0.05
+05:00, 0.05
+06:00, 0.05
+07:00, 0.05
+08:00, 0.065
+09:00, 0.175
+10:00, 0.242
+11:00, 0.390
+12:00, 0.195
+13:00, 0.218
+14:00, 0.324
+15:00, 0.173
+16:00, 0.331
+17:00, 0.184
+18:00, 0.247
+19:00, 0.138
+20:00, 0.084
+21:00, 0.065
+22:00, 0.05
+23:00, 0.05</textarea>
+                  </div>
+                <div class="input-field col s12 hide">
+<textarea class="materialize-textarea" id="input-production5">00:00, 0.05
+01:00, 0.05
+02:00, 0.05
+03:00, 0.05
+04:00, 0.05
+05:00, 0.05
+06:00, 0.05
+07:00, 0.05
+08:00, 0.05
+09:00, 0.05
+10:00, 0.05
+11:00, 0.05
+12:00, 0.052
+13:00, 0.067
+14:00, 0.0634
+15:00, 0.0878
+16:00, 0.0855
+17:00, 0.0634
+18:00, 0.0544
+19:00, 0.05
+20:00, 0.05
+21:00, 0.05
+22:00, 0.05
+23:00, 0.05</textarea>
+<!--<textarea class="materialize-textarea" id="input-production4">00:00, 0.05
+01:00, 0.05
+02:00, 0.05
+03:00, 0.05
+04:00, 0.05
+05:00, 0.05
+06:00, 0.05
+07:00, 0.05
+08:00, 0.102
+09:00, 0.137
+10:00, 0.165
+11:00, 0.197
+12:00, 0.224
+13:00, 0.251
+14:00, 0.26
+15:00, 0.252
+16:00, 0.215
+17:00, 0.187
+18:00, 0.164
+19:00, 0.120
+20:00, 0.098
+21:00, 0.07
+22:00, 0.05
+23:00, 0.05</textarea>-->
+
+                  </div>
+                  <div class="input-field col s4 m4 l4 tooltipped hide" data-position="top" data-delay="50" data-tooltip="Exponential capacity...">
+                    <input id="input_tstep" type="number" value="1" required>
+                    <label for="input_tstep"><i>Tstep (min)</i></label>
+                  </div>
+              </div>
+              <div class="col s12 m12 l12"><br></div>
+            </li>
+            <li>
+              <div class="collapsible-header white-text grey darken-3 col s12 m12 l12" style="border:none"><i class="material-icons">insert_chart</i>Laptop Usages Data</div>
+              <div class="collapsible-body col s12 m12 l12 border">
+                <div class="input-field col s12">
+                  <textarea class="materialize-textarea"  id="input-usage">08:00, 10:00, battery
+10:01, 12:55, sector
+12:56, 18:00, battery_sector</textarea>
+                  <label for="textarea1">&ltHH:mm&gt, &ltHH:mm&gt, &ltsector | battery | battery_sector&gt</label>
+                </div>
+              </div>
+            </li>
+          </ul>
+
+  <div class ="col s12 m12 l12">
+      <div class="row">
+        <div class="col s12 center">
+          <a class="waves-effect waves-light btn black darken-3" onclick="generate()">RUN</a>
+          <a class="waves-effect waves-light btn black darken-3 modal-trigger" href="#modal-save" onclick="save_as()">SAVE AS</a>
+        </div>
+        <div id="modal-save" class="modal">
+          <div class="modal-content">
+          <div class="input-field">
+            <input id="input-filename" type="text" class="validate">
+            <label for="input-filename">File name</label>
+          </div>
+          </div>
+          <div class="modal-footer">
+            <div class="col s12 center">
+              <a class="modal-action modal-close waves-effect waves-light btn black darken-3" style="margin:6px"  onclick="save()" href="#!">SAVE</a>
+              <a class="modal-action modal-close waves-effect waves-light btn black darken-3" style="margin:6px" href="#!">CANCEL</a>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+  <!-- Modal Structure -->
+  <div class ="col s12 m12 l12 hide" id="statistics">
+      <div class="row">
+      <table class="responsive-table">
+        <thead>
+          <tr>
+              <th class="white-text transparent" style="padding:5px;border-radius:0;"></th>
+              <th class="white-text grey darken-3" style="padding:5px;border-radius:0;">Default usage</th>
+              <th class="white-text grey darken-3" style="padding:5px;border-radius:0;">Your usage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="white-text blue darken-3" style="padding:5px;border-radius:0;">Total</td>
+            <td class="white-text blue darken-2" style="padding:5px;border-radius:0;" id="span-reference-total">-</td>
+            <td class="white-text blue darken-2" style="padding:5px;border-radius:0;" id="span-current-total">-</td>
+          </tr>
+          <tr>
+            <td class="white-text green darken-3" style="padding:5px;border-radius:0;">Renewable</td>
+            <td class="white-text green darken-2" style="padding:5px;border-radius:0;" id="span-reference-enr">-</td>
+            <td class="white-text green darken-2" style="padding:5px;border-radius:0;" id="span-current-enr">-</td>
+          </tr>
+          <tr>
+            <td class="white-text blue-grey darken-3" style="padding:5px;border-radius:0;">Nonrenewable</td>
+            <td class="white-text blue-grey darken-2 " style="padding:5px;border-radius:0;" id="span-reference-nenr">-</td>
+            <td class="white-text blue-grey darken-2" style="padding:5px;border-radius:0;" id="span-current-nenr">-</td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="row">
+      <table class="responsive-table centered">
+        <thead>
+          <tr>
+            <!--<th class="white-text grey darken-3" style="padding:5px;border-radius:0;">Energy saving</th>-->
+            <th class="white-text grey darken-3" style="padding:5px;border-radius:0;">Nonrenewable Saving<th>
+            <!--<th class="white-text grey darken-3" style="padding:5px;border-radius:0;">Total</th>-->
+          <tr>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <!--<td class="white-text" id="span-current-score-saving" style="padding:5px;border-radius:0;"></td>-->
+            <td class="white-text" id="span-current-score-shifting" style="padding:5px;border-radius:0;"></td>
+            <!--<td class="white-text" id="span-current-score-total" style="padding:5px;border-radius:0;"></td>-->
+          </tr>
+        </tbody>
+      </table>
+      </div>
+
+      <!--<div class="row">
+      <table class="responsive-table">
+        <thead>
+          <tr>
+              <th style="padding:5px;border-radius:0;"></th>
+              <th class="white-text grey darken-3" style="padding:5px;border-radius:0;">Energy conserved</th>
+              <th class="white-text grey darken-3" style="padding:5px;border-radius:0;">Renewable energy won</th>
+              <th class="white-text grey darken-3" style="padding:5px;border-radius:0;">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="white-text blue darken-3" style="padding:5px;border-radius:0;">Result</td>
+            <td class="white-text darken-2" id="span-current-total-diff" style="padding:5px;border-radius:0;"></td>
+            <td class="white-text darken-2" id="span-current-enr-diff" style="padding:5px;border-radius:0;"></td>
+            <td class="white-text darken-2" id="span-current-score" style="padding:5px;border-radius:0;"></td>
+          </tr>
+        </tbody>
+      </table>
+      </div>-->
+
+  </div>
+ </div>
+       <div class="col s12 m12 l8">
+           <div class="row"  id="row-usage">
+               <div class="col s12 m12 l12">
+                  <div class="col s12 center" style="height:200px" id="plot-usage">
+                  </div>
+               </div>
+               <div class="col s12 m12 l12">
+                  <div class="col s12 center" style="height:200px" id="plot-sector-consumption">
+                  </div>
+               </div>
+               <div class="col s12 m12 l12">
+                  <div class="col s12 center" style="height:200px" id="plot-battery-storage">
+                  </div>
+               </div>
+               <!--<div class="col s6 m6 l6">
+                  <div class="col s12 center" style="height:200px" id="plot-computation-consumption">
+                  </div>
+                </div>
+               <div class="col s6 m6 l6">
+                  <div class="col s12 center" style="height:200px" id="plot-battery-consumption">
+                  </div>
+               </div>-->
+            </div>
+        </div>
+       </div>
+      </div>
+    </div>
+  </div>
+</main>
+</main>
+<script src="/static/sedyl/static/js/materialize.min.js"></script>
+<script src="/static/sedyl/static/js/init.js"></script>
+<script src="/static/sedyl/static/js/wNumb.js"></script>
+<script src="/static/sedyl/static/js/plotly.min.js"></script>
+<script src="/static/sedyl/static/js/moment.js"></script>
+<script src="/static/sedyl/static/js/twix.min.js"></script>
+<script src="/static/sedyl/static/js/papaparse.min.js"></script>
+<script src="/static/sedyl/static/js/everpolate.min.js"></script>
+<script src="/static/sedyl/static/js/simple-statistics.min.js"></script>
+<script src="/static/sedyl/static/js/fileSaver.min.js"></script>
+<script type="text/javascript">
+//simulate()
+function check(checkbox) {
+  var category = checkbox.id.split("-")[1];
+  if(checkbox.checked){
+  $("#content-"+category).removeClass('hide');
+  }
+  else{
+  $("#content-"+category).addClass('hide');
+  }
+}
+//simulate()
+function select() {
+  var id = $( "#selector-production option:selected" ).val();
+  $("#input-production").val($("#input-production"+id).val());
+
+}
+$("#selector-production option:selected" ).val('1');
+$("#selector-production").trigger("change");
+
+
+
+var fileInput = document.querySelector('#file-paramaters');
+fileInput.addEventListener('change', function() {
+    if(!fileInput.files.length) return;
+    var reader = new FileReader();
+    reader.addEventListener('load', function() {
+      var json_content = JSON.parse(reader.result);
+      var parameters = new Parameters(json_content);
+      parameters.updateView();
+      generate();
+    });
+    reader.readAsText(fileInput.files[0]);
+});
+
+function save_as() {
+  var file_name = $("#file-path-paramaters").val() || "scenario_"+moment().format('YYYY-MM-DD_HH-mm-ss')+".json";
+  $('#input-filename').val(file_name)
+  $("#input-filename").trigger("change");
+  //$('#modal-save').openModal('open');
+  //var stringified_parameters = JSON.stringify(new Parameters(), null, "\t");
+  //var file = new File([stringified_parameters], file_name, {type: "application/json"});
+  //saveAs(file);
+}
+function save() {
+  var file_name = $('#input-filename').val();
+  var stringified_parameters = JSON.stringify(new Parameters(), null, "\t");
+  var file = new File([stringified_parameters], file_name, {type: "application/json"});
+  saveAs(file);
+}
+</script>
+
+
+<script type="text/javascript">
+class Practice {
+    constructor(name, sector){
+      this.name = name;
+      this.enr = ss.sum(sector.consumption_enr)|| 0;
+      this.total = ss.sum(sector.consumption_total)|| 0;
+      this.nenr = this.total-this.enr;
+      this.mean_enr = (this.enr/this.total)*100 || 0;
+      this.mean_nenr = (this.nenr/this.total)*100 || 0;
+  }
+   plot(format){
+    $("#span-"+this.name+"-total").text(format.to(this.total)+'Wh');
+    $("#span-"+this.name+"-enr").text(format.to(this.enr)+'Wh ('+format.to(this.mean_enr)+'%)');
+    $("#span-"+this.name+"-nenr").text(format.to(this.nenr)+'Wh ('+format.to(this.mean_nenr)+'%)');
+    $("#statistics").removeClass('hide');
+   }
+   plot_diff(format, practice){
+    var total_diff = this.total - practice.total
+    var mean_total_diff = (total_diff/this.total)*100
+    if(!isFinite(mean_total_diff))mean_total_diff = 0
+    var mean_enr_diff = this.mean_enr - practice.mean_enr
+    var mean_nenr_diff = this.mean_nenr - practice.mean_nenr
+    var enr_diff = this.total * mean_enr_diff/100
+    var nenr_diff = this.total * mean_nenr_diff/100
+    var score_saving =  practice.total - this.total
+    var score_shifting =  practice.nenr - this.nenr
+    var percentage_shifting =  (score_shifting/practice.nenr)*100
+    var score_total =  score_shifting + score_saving
+
+    $("#span-"+this.name+"-total-diff").removeClass("green").removeClass("red");
+    $("#span-"+this.name+"-enr-diff").removeClass("green").removeClass("red");
+    $("#span-"+this.name+"-nenr-diff").removeClass("green").removeClass("red");
+    $("#span-"+this.name+"-score-saving").removeClass("green").removeClass("red");
+    $("#span-"+this.name+"-score-shifting").removeClass("green").removeClass("red");
+    $("#span-"+this.name+"-score-total").removeClass("green").removeClass("red");
+
+    //$( "#span-"+this.name+"-total" ).append("<span id='span-"+this.name+"-total-diff'></span>" )
+    if(total_diff<=0){
+      $("#span-"+this.name+"-total-diff").addClass("green");
+      $("#span-"+this.name+"-total-diff").text('+'+format.to(Math.abs(total_diff))+'Wh');
+      //$("#span-"+this.name+"-total-diff").text('+'+format.to(Math.abs(total_diff))+'Wh (+'+format.to(Math.abs(mean_total_diff))+'%)');
+    }
+    else{
+      $("#span-"+this.name+"-total-diff").addClass("red");
+      $("#span-"+this.name+"-total-diff").text('-'+format.to(Math.abs(total_diff))+'Wh');
+      //$("#span-"+this.name+"-total-diff").text('-'+format.to(Math.abs(total_diff))+'Wh (-'+format.to(Math.abs(mean_total_diff))+'%)');
+    }
+    if(enr_diff>=0){
+      $("#span-"+this.name+"-enr-diff").addClass("green");
+      $("#span-"+this.name+"-enr-diff").text('+'+format.to(Math.abs(enr_diff))+'Wh');
+      //$("#span-"+this.name+"-enr-diff").text('+'+format.to(Math.abs(enr_diff))+'Wh (+'+format.to(Math.abs(mean_enr_diff))+'%)');
+    }
+    else{
+      $("#span-"+this.name+"-enr-diff").addClass("red");
+      $("#span-"+this.name+"-enr-diff").text('-'+format.to(Math.abs(enr_diff))+'Wh');
+      //$("#span-"+this.name+"-enr-diff").text('-'+format.to(Math.abs(enr_diff))+'Wh (-'+format.to(Math.abs(mean_enr_diff))+'%)');
+    }
+   if(nenr_diff<=0){
+      $("#span-"+this.name+"-nenr-diff").addClass("green");
+      $("#span-"+this.name+"-nenr-diff").text('+'+format.to(Math.abs(nenr_diff))+'Wh');
+    }
+    else{
+      $("#span-"+this.name+"-nenr-diff").addClass("red");
+      $("#span-"+this.name+"-nenr-diff").text('-'+format.to(Math.abs(nenr_diff))+'Wh');
+    }
+    if(score_saving>=0){
+      $("#span-"+this.name+"-score-saving").addClass("green");
+
+      $("#span-"+this.name+"-score-saving").text('+'+format.to(Math.abs(score_saving))+'Wh');
+      //$("#span-"+this.name+"-score").text('-'+format.to(score)+'Wh (-'+format.to(mean_score)+'%)');
+    }
+    else{
+      $("#span-"+this.name+"-score-saving").addClass("red");
+      $("#span-"+this.name+"-score-saving").text('-'+format.to(Math.abs(score_saving))+'Wh');
+      //$("#span-"+this.name+"-score").text('+'+format.to(score)+'Wh (+'+format.to(mean_score)+'%)');
+    }
+
+    if(score_shifting>=0){
+      $("#span-"+this.name+"-score-shifting").addClass("green");
+      $("#span-"+this.name+"-score-shifting").text('+'+format.to(Math.abs(score_shifting))+'Wh ('+format.to(percentage_shifting)+'%)');
+      //$("#span-"+this.name+"-score").text('-'+format.to(score)+'Wh (-'+format.to(mean_score)+'%)');
+    }
+    else{
+      $("#span-"+this.name+"-score-shifting").addClass("red");
+      $("#span-"+this.name+"-score-shifting").text('-'+format.to(Math.abs(score_shifting))+'Wh ('+format.to(percentage_shifting)+'%)');
+      //$("#span-"+this.name+"-score").text('+'+format.to(score)+'Wh (+'+format.to(mean_score)+'%)');
+    }
+
+    if(score_total>=0){
+      $("#span-"+this.name+"-score-total").addClass("green");
+      $("#span-"+this.name+"-score-total").text('+'+format.to(Math.abs(score_total))+'Wh');
+      //$("#span-"+this.name+"-score").text('-'+format.to(score)+'Wh (-'+format.to(mean_score)+'%)');
+    }
+    else{
+      $("#span-"+this.name+"-score-total").addClass("red");
+      $("#span-"+this.name+"-score-total").text('-'+format.to(Math.abs(score_total))+'Wh');
+      //$("#span-"+this.name+"-score").text('+'+format.to(score)+'Wh (+'+format.to(mean_score)+'%)');
+    }
+
+ }
+}
+class Parameters {
+    constructor(json){
+      this.input_production = $("#input-production").val();
+      this.input_usage = $("#input-usage").val();
+      this.step = $("#input_tstep").val();
+      this.q_rated = $("#input-battery-qrated").val();
+      this.v_nom = $("#input-battery-vnom").val();
+      this.a_charge = $("#input-battery-acharge").val();
+      this.a_discharge = parseFloat($("#input-battery-adischarge").val());
+      this.soc_min =  $("#input-battery-soc-min").val();
+      this.soc_max =  $("#input-battery-soc-max").val();
+      this.soc =  $("#input-battery-soc").val();
+      this.soc_enr =  $("#input-battery-socenr").val();
+      this.battery_efficiency =$("#input-battery-efficiency").val();
+      this.charger_efficiency = $("#input-laptop-efficiency").val();
+      for (var prop in json) this[prop] = json[prop];
+  }
+    updateView(){
+      $("#input-production").val(this.input_production);
+      $("#input-usage").val(this.input_usage);
+      $("#input_tstep").val(this.step);
+      $("#input-battery-qrated").val(this.q_rated);
+      $("#input-battery-vnom").val(this.v_nom);
+      $("#input-battery-acharge").val(this.a_charge);
+      $("#input-battery-adischarge").val(this.a_discharge);
+      $("#input-battery-soc-min").val(this.soc_min);
+      $("#input-battery-soc-max").val(this.soc_max);
+      $("#input-battery-soc").val(this.soc);
+      $("#input-battery-socenr").val(this.soc_enr);
+      $("#input-battery-efficiency").val(this.battery_efficiency);
+      $("#input-laptop-efficiency").val(this.charger_efficiency);
+      /*$(".collapsible-header").removeClass("active");
+      $(".collapsible").collapsible({accordion: true});
+      $(".collapsible").collapsible({accordion: false});
+      $(".collapsible-header").delay(500).queue(function(next){
+            $(this).addClass("active");
+            next();
+        });
+      $(".collapsible").delay(500).queue(function(next){
+            $(this).collapsible({accordion: false});
+            next();
+        });*/
+
+  }
+}
+
+class Production {
+  constructor(parameters){
+    var time = []; var value = [];
+    var now = moment();
+    Papa.parse(parameters.input_production).data.forEach(function(e){time.push(moment(now.format('YYYY-MM-DD ')+e[0].trim()));value.push(parseFloat(e[1]));});
+    var step = parseInt(parameters.step);
+    var time_interpolated = moment.twix(time[0], time[time.length-1]).toArray(step, 'minutes');
+    //var linear = everpolate.linear;
+    //var value_interpolated = linear(time_interpolated, time, value);
+    var step_interpolation = everpolate.step;
+    var value_interpolated = step_interpolation(time_interpolated, time, value);
+    var time = []; var enr = [];  var total = [];
+    time_interpolated.forEach(function(e) {time.push(e);});
+    value_interpolated.forEach(function(e) {enr.push(e);});
+    value_interpolated.forEach(function(e) {total.push(1.);});
+    this.time = time;
+    this.enr = enr;
+    this.total = total;
+  }
+  statistics(){
+    $('#span-production-mean').text((ss.mean(this.enr) * 100).toFixed(1) + ' %');
+    $('#span-production-std').text((ss.standardDeviation(this.enr) * 100).toFixed(1) + ' %');
+  }
+}
+
+class Usage {
+  constructor(mode, time, enr, total) {
+    this.mode = mode;
+    this.time = time;
+    this.enr = enr;
+    this.total = total;
+  }
+}
+
+class Usages {
+  constructor(parameters, production) {
+    this.time = [];
+    this.mode = [];
+    this.list = [];
+    var time_g = this.time;
+    production.time.forEach(function(e){time_g.push(e)});
+    var list_g = this.list;
+    var mode_g = this.mode;
+    var now = moment();
+    Papa.parse(parameters.input_usage).data.forEach(function(e){
+      var time_start = moment(now.format('YYYY-MM-DD ')+e[0].trim());
+      var time_end = moment(now.format('YYYY-MM-DD ')+e[1].trim());
+      var mode = e[2].trim();
+      var step_interpolation = everpolate.step;
+      var time = production.time.filter(function(t) {return (t >= time_start && t <= time_end);});
+      var enr = step_interpolation(time, production.time, production.enr);
+      var total = step_interpolation(time, production.time, production.total);
+      var usage = new Usage(mode, time, enr, total);
+      list_g.push(usage);
+    });
+
+  }
+plot(production, format){
+  $("#plot-usage").empty();
+  var data = [];
+  var x1 = []; production.time.forEach(function(e) {x1.push(e.format('HH:mm'));});
+  var y1 = []; var y1_label = [];  production.enr.forEach(function(e) {y1.push(format.to(e*100));y1_label.push(format.to(e*100)+ '%');});
+  var green = {
+    x : x1,
+    y : y1,
+    text : y1_label,
+    hoverinfo : "text+name",
+    fill: 'tonexty',
+    type: 'scatter',
+    mode: 'lines',
+    name : "Renewable",
+    line: {
+        color: '#64dd17'
+    },
+  };
+  data.push(green);
+  var y2 = []; production.total.forEach(function(e) {y2.push(e*100);});
+  var y2_label = []; production.enr.forEach(function(e) {y2_label.push(format.to(100-e*100) + '%');});
+  var grey = {
+    x : x1,
+    y : y2,
+    text : y2_label,
+    hoverinfo : "x+text+name",
+    fill: 'tonexty',
+    type: 'scatter',
+    mode: 'lines',
+    name : "Non-renewable",
+    line: {
+        color: '#000'
+    }
+  };
+  data.push(grey);
+  var annotation_array = [];
+
+  var y_usages = [];
+  for(let usage of this.list){
+    var x = []; usage.time.forEach(function(e) {x.push(e.format('HH:mm'));});
+    var y = []; usage.enr.forEach(function(e) {y.push(101);y_usages.push(e)});
+    var usage_color = '#000';
+    var usage_label = 'none';
+    var usage_y_pos = 0;
+    if(usage.mode == "battery"){
+      usage_color ='#f44336';
+      usage_label = 'Battery';
+      usage_y_pos = 50;
+    }
+    if(usage.mode == "sector"){
+      usage_color = '#2196f3';
+      usage_label = 'Sector';
+      usage_y_pos = 20;
+    }
+    if(usage.mode == "battery_sector"){
+      usage_color ='#4caf50';
+      usage_label = 'Battery + Sector';
+      usage_y_pos = 80;
+    }
+    var trace = {
+      x : x,
+      y : y,
+      text : y,
+      hoverinfo : "none",
+      fill: 'tozeroy',
+      type: 'scatter',
+      mode: 'lines',
+      name : usage.mode,
+      line: {
+          color: usage_color
+      }
+    };
+    data.push(trace);
+
+    annotation_array.push({
+              x: usage.time[parseInt(usage.time.length/2)].format('HH:mm'),
+              y: usage_y_pos,
+              xanchor : 'center',
+              xref: 'x',
+              yref: 'y',
+              text: usage_label,
+              showarrow: false,
+              font: {
+                size: 12,
+                color: '#fff'
+              },
+              align: 'center',
+              arrowhead: 2,
+              arrowsize: 1,
+              arrowwidth: 1,
+              arrowcolor: '#fff',
+              bordercolor: '#fff',
+              borderwidth: 1,
+              borderpad: 4,
+              bgcolor: usage_color,
+              opacity: 1
+            });
+  }
+
+
+  var mean_usages = format.to(ss.mean(y_usages)*100);
+  var mean = format.to(ss.mean(production.enr)*100);
+  /*annotation_array.push({
+              x: production.time.length,
+              y: mean_usages,
+              xanchor : 'right',
+              xref: 'x',
+              yref: 'y',
+              text: 'AVG RENEWABLE: ' + mean_usages +'%',
+              showarrow: false,
+              font: {
+                size: 12,
+                color: '#fff'
+              },
+              align: 'center',
+              arrowhead: 2,
+              arrowsize: 1,
+              arrowwidth: 1,
+              arrowcolor: 'rgb(0, 0, 0)',
+              bordercolor: 'rgb(0, 0, 0)',
+              borderwidth: 3,
+              borderpad: 4,
+              bgcolor: 'rgb(0, 0, 0)',
+              opacity: 1
+            });*/
+
+  var layout = {
+          title : 'Laptop Usages & Energy Production Mix',
+          titlefont: {
+              size: 14,
+              color: '#212121'
+            },
+       /*shapes: [
+          {
+            type: 'line',
+            x0: 0,
+            y0: mean_usages,
+            x1: production.time.length,
+            y1: mean_usages,
+            line: {
+              color: 'rgb(0, 0, 0)',
+              width: 3
+            }
+          }
+        ],*/
+        margin: { t: 25, b:50, l:25, r:10},
+        showlegend: false,
+        annotations: annotation_array/*[
+            {
+              x: production.time.length,
+              y: 50,
+              xanchor : 'right',
+              xref: 'x',
+              yref: 'y',
+              text: 'AVG ENR RATE (usage): ' + mean_usages +'%',
+              showarrow: false,
+              font: {
+                size: 12,
+                color: '#fff'
+              },
+              align: 'center',
+              arrowhead: 2,
+              arrowsize: 1,
+              arrowwidth: 1,
+              arrowcolor: '#fff',
+              bordercolor: '#fff',
+              borderwidth: 1,
+              borderpad: 4,
+              bgcolor: '#212121',
+              opacity: 1
+            },
+            {
+              x: production.time.length,
+              y: 100,
+              xanchor : 'right',
+              xref: 'x',
+              yref: 'y',
+              text: 'AVG RENEWABLE RATE: ' + mean +'%',
+              showarrow: false,
+              font: {
+                size: 12,
+                color: '#fff'
+              },
+              align: 'center',
+              arrowhead: 2,
+              arrowsize: 1,
+              arrowwidth: 1,
+              arrowcolor: '#fff',
+              bordercolor: '#fff',
+              borderwidth: 1,
+              borderpad: 4,
+              bgcolor: '#212121',
+              opacity: 1
+            }
+          ]*/
+
+     };
+  Plotly.newPlot($("#plot-usage").get(0), data, layout);
+}
+}
+
+class Battery {
+  constructor(parameters) {
+    this.q_rated = parseFloat(parameters.q_rated);
+    this.q_exp = parseFloat(parameters.q_rated)*0.2;
+    this.v_nom = parseFloat(parameters.v_nom);
+    this.v_max = parseFloat(parameters.v_nom)*1.2;
+    this.v_min = parseFloat(parameters.v_nom)*0.2;
+    this.a_nom = parseFloat(parameters.a_charge);
+    this.soc_max = parseFloat(parameters.soc_max)/100;
+    this.soc_min = parseFloat(parameters.soc_min)/100;
+    this.soc =  parseFloat(parameters.soc)/100;
+    this.soc_enr = parseFloat(parameters.soc_enr)/100;
+    this.battery_efficiency =  parseFloat(parameters.battery_efficiency)/100;
+    this.r_enr = this.soc_enr/this.soc; // Ah
+
+    this.time = [];
+    this.consumption_enr = [];
+    this.consumption_total = [];
+    this.storage_enr = [];
+    this.storage_total = [];
+    this.socs_enr = [];
+    this.socs_total = [];
+  }
+  init(time){
+    this.time.push(time);
+    this.consumption_enr.push(0);
+    this.consumption_total.push(0);
+    this.storage_enr.push(this.getChargeVoltageAt(this.soc) * this.soc_enr * this.q_rated);
+    this.storage_total.push(this.getChargeVoltageAt(this.soc) * this.soc * this.q_rated);
+    this.socs_enr.push(this.soc_enr);
+    this.socs_total.push(this.soc);
+  }
+
+
+  push(time, consumption_enr, consumption_total, storage_enr, storage_total, soc_enr, soc){
+    this.time.push(time);
+    this.consumption_enr.push(consumption_enr);
+    this.consumption_total.push(consumption_total);
+    this.storage_enr.push(storage_enr);
+    this.storage_total.push(storage_total);
+    this.socs_enr.push(soc_enr);
+    this.socs_total.push(soc);
+  }
+
+  plot(production, format){
+    $("#plot-battery-storage").empty();
+    var data = [];
+    var x = [];
+    var y = [];
+    production.time.forEach(function(e) {x.push(e.format('HH:mm')); y.push(0);});
+    var trace = {
+        x : x,
+        y : y,
+        hoverinfo : "none",
+        visible:true,
+        opacity : 0.0,
+      };
+    data.push(trace);
+
+    var x1 = []; this.time.forEach(function(e) {x1.push(e.format('HH:mm'));});
+    var y1 = [];
+    var y1_label = [];
+    var battery = this;
+    this.storage_enr.forEach(function(e, i) {y1.push(e); y1_label.push(format.to(e) + ' Wh ('+(format.to(battery.socs_enr[i]*100))+'%)')});
+    var green = {
+      x : x1,
+      y : y1,
+      text : y1_label,
+      hoverinfo : "text+name",
+      fill: 'tozeroy',
+      type: 'scatter',
+      mode: 'lines',
+      name : "Renewable",
+      line: {
+          color: '#64dd17'
+      }
+    };
+    data.push(green);
+    var y2 = []; this.storage_total.forEach(function(e) {y2.push(e);});
+    var y2_label = []; this.storage_total.forEach(function(e, i) {y2_label.push(format.to(e)+' Wh ('+(format.to(battery.socs_total[i]*100))+'%)')});
+    var grey = {
+      x : x1,
+      y : y2,
+      text : y2_label,
+      hoverinfo : "x+text+name",
+      fill: 'tonexty',
+      type: 'scatter',
+      mode: 'lines',
+      name : "Total",
+      line: {
+          color: '#000'
+      }
+    };
+    data.push(grey);
+
+  var sum_init_enr = this.storage_enr[0];
+  var sum_init_total = this.storage_total[0];
+  var mean_init_enr = (sum_init_enr/sum_init_total)*100;
+  var sum_enr = this.storage_enr[this.storage_enr.length-1];
+  var sum_total =this.storage_total[this.storage_total.length-1];
+  var mean_enr = (sum_enr/sum_total)*100;
+
+  var layout = {
+          hovermode:'compare',
+          title : 'Battery Energy Storage',
+          titlefont: {
+              size: 14,
+              color: '#212121'
+            },
+          margin: { t: 30, b:50, l:25, r:10},
+          showlegend: false,
+          annotations: [
+              /*{
+                x: production.time.length,
+                y: ss.max(this.storage_total),
+                xanchor : 'right',
+                xref: 'x',
+                yref: 'y',
+                text: 'FINAL ENR: ' + format.to(mean_enr) +'% (' + format.to(sum_enr)+ 'Wh/' + format.to(sum_total)+'Wh)',
+                showarrow: false,
+                font: {
+                  size: 12,
+                  color: '#fff'
+                },
+                align: 'center',
+                arrowhead: 2,
+                arrowsize: 1,
+                arrowwidth: 1,
+                arrowcolor: '#fff',
+                ax: 0,
+                ay: 0,
+                bordercolor: '#fff',
+                borderwidth: 1,
+                borderpad: 4,
+                bgcolor: '#212121',
+                opacity: 1
+              },
+              {
+                x: 0,
+                y: ss.max(this.storage_total),
+                xanchor : 'left',
+                xref: 'x',
+                yref: 'y',
+                text: 'INIT ENR: ' + format.to(mean_init_enr) +'% (' + format.to(sum_init_enr)+ 'Wh/' + format.to(sum_init_total)+'Wh)',
+                showarrow: false,
+                font: {
+                  size: 12,
+                  color: '#fff'
+                },
+                align: 'center',
+                arrowhead: 2,
+                arrowsize: 1,
+                arrowwidth: 1,
+                arrowcolor: '#fff',
+                ax: 0,
+                ay: 0,
+                bordercolor: '#fff',
+                borderwidth: 1,
+                borderpad: 4,
+                bgcolor: '#212121',
+                opacity: 1
+              }*/
+            ]
+       };
+    Plotly.newPlot($("#plot-battery-storage").get(0), data, layout);
+
+/*
+    $("#plot-battery-consumption").empty();
+    var data = [];
+    var x = [];
+    var y = [];
+    production.time.forEach(function(e) {x.push(e.format('HH:mm')); y.push(0);});
+    var trace = {
+        x : x,
+        y : y,
+        hoverinfo : "none",
+        visible:true,
+        opacity : 0.0,
+      };
+    data.push(trace);
+
+    var x1 = []; this.time.forEach(function(e) {x1.push(e.format('HH:mm'));});
+    var y1 = [];
+    var y1_label = [];
+    var battery = this;
+    this.consumption_enr.forEach(function(e, i) {y1.push(e); y1_label.push(format.to(e) + ' Wh')});
+
+    var green = {
+      x : x1,
+      y : y1,
+      text : y1_label,
+      hoverinfo : "text+name",
+      fill: 'tozeroy',
+      type: 'scatter',
+      mode: 'lines',
+      name : "Renewable",
+      line: {
+          color: '#64dd17'
+      }
+    };
+    data.push(green);
+    var y2 = []; this.consumption_total.forEach(function(e) {y2.push(e);});
+    var y2_label = []; this.consumption_total.forEach(function(e, i) {y2_label.push(format.to(e) +' Wh')});
+    var grey = {
+      x : x1,
+      y : y2,
+      text : y2_label,
+      hoverinfo : "x+text+name",
+      fill: 'tonexty',
+      type: 'scatter',
+      mode: 'lines',
+      name : "Total",
+      line: {
+          color: '#000'
+      }
+    };
+    data.push(grey);
+
+  var sum_enr = ss.sum(this.consumption_enr);
+  var sum_total = ss.sum(this.consumption_total);
+  console.log("battery consumption: ",sum_total);
+  var mean_enr = (sum_enr/sum_total)*100;
+  var layout = {
+          hovermode:'compare',
+          title : 'Battery Energy Consumption',
+          titlefont: {
+              size: 14,
+              color: '#212121'
+            },
+          margin: { t: 30, b:50, l:25, r:25},
+          showlegend: false,
+          annotations: [
+            ]
+       };
+    Plotly.newPlot($("#plot-battery-consumption").get(0), data, layout);
+*/
+  }
+  getChargeVoltage(){
+    var E = this.v_nom; var Q = this.q_rated; var R = 0.01; var K =  0.0076;
+    var it = Q*(1-this.soc); var A =  this.q_exp; var B = 3/this.q_exp; var i = this.a_nom; var i_filtered = 0;
+    var ans = E - R*i   -K*(Q/(it-0.1*Q))*i_filtered    - K*(Q/(Q-it))*it    + A*Math.exp(-B*it);
+    return ans;
+  }
+  getChargeVoltageAt(soc){
+    var E = this.v_nom; var Q = this.q_rated; var R = 0.01; var K =  0.0076;
+    var it = Q*(1-soc); var A =  this.q_exp; var B = 3/this.q_exp; var i = this.a_nom; var i_filtered = 0;
+    var ans = E - R*i   -K*(Q/(it-0.1*Q))*i_filtered    - K*(Q/(Q-it))*it    + A*Math.exp(-B*it);
+    return ans;
+  }
+  canDischarge(computation){
+    return (this.soc>this.soc_min);
+  }
+
+  getDischargeVoltage(){
+    var E = this.v_nom; var Q = this.q_rated; var R = 0.01; var K =  0.0076;
+    var it = Q*(1-this.soc); var A =  this.q_exp; var B = 3/this.q_exp; var i = this.a_nom; var i_filtered = 0;
+    var ans = E - (R*i) - K*(Q/(Q-it)) * (it + i_filtered) + A*Math.exp(-B*it);
+    return ans;
+  }
+  getDischargeVoltageAt(soc){
+    var E = this.v_nom; var Q = this.q_rated; var R = 0.01; var K =  0.0076;
+    var it = Q*(1-soc); var A =  this.q_exp; var B = 3/this.q_exp; var i = this.a_nom; var i_filtered = 0;
+    var ans = E - (R*i) - K*(Q/(Q-it)) * (it + i_filtered) + A*Math.exp(-B*it);
+    return ans;
+  }
+}
+class Sector {
+  constructor(parameters) {
+    this.time = [];
+    this.consumption_enr = [];
+    this.consumption_total = [];
+    this.charger_efficiency =  parseFloat(parameters.charger_efficiency)/100;
+  }
+  init(time){
+    this.time.push(time);
+    this.consumption_enr.push(0);
+    this.consumption_total.push(0);
+  }
+  push(time, enr, total){
+    this.time.push(time);
+    this.consumption_enr.push(enr/this.charger_efficiency);
+    this.consumption_total.push(total/this.charger_efficiency);
+  }
+  plot(production, format){
+    $("#plot-sector-consumption").empty();
+    var data = [];
+    var x = [];
+    var y = [];
+    production.time.forEach(function(e) {x.push(e.format('HH:mm')); y.push(0);});
+    var trace = {
+        x : x,
+        y : y,
+        hoverinfo : "none",
+        visible:true,
+        opacity : 0.0,
+      };
+    data.push(trace);
+
+    var x1 = []; this.time.forEach(function(e) {x1.push(e.format('HH:mm'));});
+    var y1 = [];
+    var y1_label = [];
+    this.consumption_enr.forEach(function(e) {y1.push(e); y1_label.push(format.to(e) + ' Wh')});
+    var green = {
+      x : x1,
+      y : y1,
+      text : y1_label,
+      hoverinfo : "text+name",
+      fill: 'tozeroy',
+      type: 'scatter',
+      mode: 'lines',
+      name : "Renewable",
+      line: {
+          color: '#64dd17'
+      }
+    };
+    data.push(green);
+    var y2 = []; this.consumption_total.forEach(function(e) {y2.push(e);});
+    var y2_label = []; this.consumption_total.forEach(function(e) {y2_label.push(format.to(e)+' Wh');});
+    var grey = {
+      x : x1,
+      y : y2,
+      text : y2_label,
+      hoverinfo : "x+text+name",
+      fill: 'tonexty',
+      type: 'scatter',
+      mode: 'lines',
+      name : "Total",
+      line: {
+          color: '#000'
+      }
+    };
+    data.push(grey);
+
+  var sum_enr = ss.sum(this.consumption_enr);
+  var sum_total = ss.sum(this.consumption_total);
+  var mean_enr = (sum_enr/sum_total)*100;
+  var layout = {
+          hovermode:'compare',
+          title : 'Sector Energy Consumption',
+          titlefont: {
+              size: 14,
+              color: '#212121'
+            },
+          margin: { t: 30, b:50, l:25, r:25},
+          showlegend: false,
+          annotations: [
+             /* {
+                x: production.time.length,
+                y: ss.max(this.consumption_total),
+                xanchor : 'right',
+                xref: 'x',
+                yref: 'y',
+                text: 'TOTAL ENR: ' + format.to(mean_enr)+'% (' + format.to(sum_enr) + 'Wh/' + format.to(sum_total) + 'Wh)',
+                showarrow: true,
+                font: {
+                  size: 12,
+                  color: '#fff'
+                },
+                align: 'center',
+                arrowhead: 2,
+                arrowsize: 1,
+                arrowwidth: 1,
+                arrowcolor: '#fff',
+                ax: 0,
+                ay: 0,
+                bordercolor: '#fff',
+                borderwidth: 1,
+                borderpad: 4,
+                bgcolor: '#212121',
+                opacity: 1
+              }*/
+            ]
+          /*xaxis:{
+            autorange:true,
+            showgrid:true,
+            zeroline:false,
+            showline:false,
+            autotick:true,
+            ticks:'',
+            showticklabels:false
+          },*/
+       };
+    Plotly.newPlot($("#plot-sector-consumption").get(0), data, layout);
+  }
+}
+
+class Computation {
+  constructor(parameters) {
+    this.v_nom = parseFloat(parameters.v_nom);
+    this.a_nom = parseFloat(parameters.a_discharge);
+    this.p = this.v_nom * this.a_nom;
+    this.time = [];
+    this.consumption_enr = [];
+    this.consumption_total = [];
+  }
+  init(time){
+    this.time.push(time);
+    this.consumption_enr.push(0);
+    this.consumption_total.push(0);
+  }
+  push(time, enr, total){
+    this.time.push(time);
+    this.consumption_enr.push(enr);
+    this.consumption_total.push(total);
+  }
+  plot(production, format){
+    $("#plot-computation-consumption").empty();
+    var data = [];
+    var x = [];
+    var y = [];
+    production.time.forEach(function(e) {x.push(e.format('HH:mm')); y.push(0);});
+    var trace = {
+        x : x,
+        y : y,
+        hoverinfo : "none",
+        visible:true,
+        opacity : 0.0,
+      };
+    data.push(trace);
+
+    var x1 = []; this.time.forEach(function(e) {x1.push(e.format('HH:mm'));});
+    var y1 = [];
+    var y1_label = [];
+    this.consumption_enr.forEach(function(e) {y1.push(e); y1_label.push(format.to(e) + ' Wh')});
+    var green = {
+      x : x1,
+      y : y1,
+      text : y1_label,
+      hoverinfo : "text+name",
+      fill: 'tozeroy',
+      type: 'scatter',
+      mode: 'lines',
+      name : "Renewable",
+      line: {
+          color: '#64dd17'
+      }
+    };
+    data.push(green);
+    var y2 = []; this.consumption_total.forEach(function(e) {y2.push(e);});
+    var y2_label = []; this.consumption_total.forEach(function(e) {y2_label.push(format.to(e)+' Wh');});
+    var grey = {
+      x : x1,
+      y : y2,
+      text : y2_label,
+      hoverinfo : "x+text+name",
+      fill: 'tonexty',
+      type: 'scatter',
+      mode: 'lines',
+      name : "Total",
+      line: {
+          color: '#000'
+      }
+    };
+    data.push(grey);
+
+  var sum_enr = ss.sum(this.consumption_enr);
+  var sum_total = ss.sum(this.consumption_total);
+  var mean_enr = (sum_enr/sum_total)*100;
+  console.log("computation consumption: ",sum_total);
+  var layout = {
+          hovermode:'compare',
+          title : 'Computation Energy Consumption',
+          titlefont: {
+              size: 14,
+              color: '#212121'
+            },
+          margin: { t: 30, b:50, l:25, r:25},
+          showlegend: false,
+          annotations: [
+             /* {
+                x: production.time.length,
+                y: ss.max(this.consumption_total),
+                xanchor : 'right',
+                xref: 'x',
+                yref: 'y',
+                text: 'TOTAL ENR: ' + format.to(mean_enr) + '% (' + format.to(sum_enr) + 'Wh/' + format.to(sum_total) +'Wh)',
+                showarrow: true,
+                font: {
+                  size: 12,
+                  color: '#fff'
+                },
+                align: 'center',
+                arrowhead: 2,
+                arrowsize: 1,
+                arrowwidth: 1,
+                arrowcolor: '#fff',
+                ax: 0,
+                ay: 0,
+                bordercolor: '#fff',
+                borderwidth: 1,
+                borderpad: 4,
+                bgcolor: '#212121',
+                opacity: 1
+              }*/
+            ]
+          /*xaxis:{
+            autorange:true,
+            showgrid:true,
+            zeroline:false,
+            showline:false,
+            autotick:true,
+            ticks:'',
+            showticklabels:false
+          },*/
+       };
+    Plotly.newPlot($("#plot-computation-consumption").get(0), data, layout);
+  }
+}
+
+function compute(usage, computation, battery, sector){
+
+var m_current = moment(usage.time[0]);
+var m_end = moment(usage.time[usage.time.length-1]);
+var step = 60;
+var step_interpolation = everpolate.step;
+
+  if(usage.mode == "sector"){
+
+    while(m_end.diff(m_current, 'seconds')>=0){
+      var enr_rate = step_interpolation(m_current, usage.time, usage.enr);
+      m_current.add(step,'seconds');
+      var e_step_total = computation.p * (step/3600);
+
+      var e_step_enr = e_step_total * enr_rate;
+      computation.push(moment(m_current), e_step_enr, e_step_total);
+      battery.push(moment(m_current), 0, 0, battery.storage_enr[battery.storage_enr.length-1] || battery.getChargeVoltage() * (battery.soc_enr * battery.q_rated), battery.storage_total[battery.storage_total.length-1] || battery.getChargeVoltage() * (battery.soc  * battery.q_rated), battery.soc_enr, battery.soc);
+      sector.push(moment(m_current), e_step_enr, e_step_total);
+    }
+
+  }
+
+  if(usage.mode == "battery"){
+
+    while(m_end.diff(m_current, 'seconds')>=0){
+      m_current.add(step,'seconds');
+      var q_current = battery.soc * battery.q_rated;
+      var e_current = battery.getDischargeVoltage()* q_current;
+      var q_step = computation.a_nom * (step/3600);
+      var e_step_total = computation.p * (step/3600);
+      var e_step_enr = e_step_total * battery.r_enr;
+      var q_next = Math.max(q_current - q_step, battery.soc_min * battery.q_rated);
+      battery.soc = Math.max(q_next/battery.q_rated, battery.soc_min);
+      battery.soc_enr = battery.soc * battery.r_enr;
+      var e_next = battery.getDischargeVoltage() * q_next;
+      var e_enr_next = e_next * battery.r_enr;
+      battery.push(moment(m_current), 0, 0, e_enr_next, e_next, battery.soc_enr, battery.soc);
+      computation.push(moment(m_current), e_step_enr, e_step_total);
+      sector.push(moment(m_current), 0, 0);
+    }
+
+  }
+
+  if(usage.mode == "battery_sector"){
+
+    while(m_end.diff(m_current, 'seconds')>=0){
+      var enr_rate = step_interpolation(m_current, usage.time, usage.enr);
+      m_current.add(step,'seconds');
+      var e_step_total1 = computation.p * (step/3600);
+      var e_step_enr1 = e_step_total1 * enr_rate;
+      computation.push(moment(m_current), e_step_enr1, e_step_total1);
+
+      var q_current = battery.soc * battery.q_rated;
+      var v_current = battery.getChargeVoltage();
+      var a_current = battery.a_nom;
+      var v_max = battery.getChargeVoltageAt(battery.soc_max);
+
+      if(v_current > battery.v_nom){
+        var factor =  (v_max - v_current)/(v_max-battery.v_nom);
+        var soc_factor =  Math.min(Math.max(0.0,1 - ((1-battery.soc) / 0.25)), battery.soc_max);
+        var a_factor = a_current-(0.03 * battery.q_rated);
+        a_current = battery.a_nom - soc_factor * a_factor;
+
+      }
+      var e_current = v_current * q_current;
+      var e_enr_current = e_current * battery.r_enr;
+
+      if(v_current >= v_max){
+        battery.push(moment(m_current), 0, 0, e_enr_current, e_current, battery.soc_enr, battery.soc);
+        sector.push(moment(m_current),e_step_enr1, e_step_total1);
+      }
+      else{
+        var q_step = a_current * (step/3600);
+        var e_step_total = v_current * a_current * (step/3600);
+        var e_step_enr = e_step_total * enr_rate;
+
+        // sector
+        var e_step_total2 = e_step_total;
+        var e_step_enr2 = e_step_enr;
+
+        var q_step = q_step * battery.battery_efficiency;
+        var e_step_total = e_step_total * battery.battery_efficiency;
+        var e_step_enr = e_step_enr * battery.battery_efficiency;
+
+        var q_next = q_current + q_step;
+        var soc_next = q_next/battery.q_rated;
+        battery.soc = soc_next;
+        battery.r_enr = (e_enr_current+e_step_enr)/(e_current+e_step_total);
+        battery.soc_enr = battery.soc * battery.r_enr;
+        var e_next = battery.getChargeVoltage() * q_next;
+        var e_next_enr = e_next * battery.r_enr;
+
+        battery.push(moment(m_current), e_step_enr, e_step_total, e_next_enr, e_next, battery.soc_enr, battery.soc);
+        sector.push(moment(m_current), e_step_enr1 + e_step_enr2, e_step_total1 + e_step_total2);
+      }
+    }
+  }
+}
+function generateReference(format) {
+  var parameters = new Parameters();
+  console.log(parameters)
+  var production = new Production(parameters);
+  var usages = new Usages(parameters, production);
+  var computation = new Computation(parameters);
+  var battery = new Battery(parameters);
+  var sector = new Sector(parameters);
+  battery.init(usages.list[0].time[0]);
+  computation.init(usages.list[0].time[0]);
+  sector.init(usages.list[0].time[0]);
+
+  for (let usage of usages.list) {
+    usage.mode = "battery_sector";
+    compute(usage, computation, battery, sector);
+  }
+  return new Practice('reference', sector);
+
+}
+function generate() {
+  var format = wNumb({decimals: 2,});
+  var practice_ref = generateReference(format);
+  practice_ref.plot(format);
+  var parameters = new Parameters();
+  var production = new Production(parameters);
+  var usages = new Usages(parameters, production);
+  var computation = new Computation(parameters);
+  var battery = new Battery(parameters);
+  var sector = new Sector(parameters);
+  battery.init(usages.list[0].time[0]);
+  computation.init(usages.list[0].time[0]);
+  sector.init(usages.list[0].time[0]);
+
+  for (let usage of usages.list) {
+    compute(usage, computation, battery, sector);
+  }
+  //computation.plot(production, format);
+  battery.plot(production, format);
+  sector.plot(production, format);
+  usages.plot(production, format);
+
+  var usage_p = $("#plot-usage").get(0);
+  //var computation_c = $("#plot-computation-consumption").get(0);
+  var sector_c = $("#plot-sector-consumption").get(0);
+  //var battery_c = $("#plot-battery-consumption").get(0);
+  var battery_s = $("#plot-battery-storage").get(0);
+
+// var plots = [usage_p, computation_c, sector_c, battery_c, battery_s];
+var plots = [usage_p, sector_c, battery_s];
+for(var plot of plots){
+  var plots_filtered = plots;
+  plot.on('plotly_hover', function(eventdata){
+    for(var plot_filtered of plots_filtered){
+     Plotly.Fx.hover(plot_filtered,{ xval: eventdata.xvals[0]});
+    }
+  });
+ }
+  var practice_cur = new Practice('current', sector);
+  practice_cur.plot(format);
+  practice_cur.plot_diff(format, practice_ref);
+}
+
+</script>
+</body>
+<footer class="page-footer grey darken-3" style="padding-left:0">
+  <div class="container">
+    <div class="row">
+      <div class="col s12 m8 l8">
+        <h5 class="white-text">Institution</h5>
+          <a href="http://www.estia.fr/" class="brand-logo"><img id="front-page-logo" src="/static/sedyl/static/logo/estia.jpg" height="70px"></a>
+          <a href="https://www.labri.fr/" class="brand-logo"><img id="front-page-logo" src="/static/sedyl/static/logo/labri.png" height="70px"></a>
+          <a href="https://www.u-bordeaux.fr/" class="brand-logo"><img id="front-page-logo" src="/static/sedyl/static/logo/bordeaux.svg" height="70px"></a>
+          <a href="http://www.aquitaine.fr/" class="brand-logo"><img id="front-page-logo" src="/static/sedyl/static/logo/aquitaine.png" height="70px"></a>
+          <a href="http://www.communaute-paysbasque.fr/" class="brand-logo"><img id="front-page-logo" src="/static/sedyl/static/logo/basque.jpg" height="70px"></a>
+      </div>
+      <div class="col s12 m4 l4">
+        <h5 class="white-text">Contact</h5>
+        <ul>
+          <li><a class="grey-text text-lighten-3 clickable" href="../daniel/index.html">Maxime Daniel, PhD student</a></li>
+          <li><a class="grey-text text-lighten-3 clickable" href="http://www.guillaumeriviere.name/">Guillaume Rivière, Associate professor</a></li>
+          <li><a class="grey-text text-lighten-3 clickable" href="http://profils.estia.fr/n.couture/">Nadine Couture, Professor</a></li>
+          <li><a class="grey-text text-lighten-3 clickable" href="https://www.lekooa.com/">Stéphane kreckelbergh, Associate professor</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-copyright black">
+    <div class="container center">
+    ITAME 2015 - 2018
+    </div>
+  </div>
+</footer>
+</html>
+

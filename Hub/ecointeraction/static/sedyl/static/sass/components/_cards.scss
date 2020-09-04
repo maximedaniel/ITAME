@@ -1,0 +1,173 @@
+
+
+.card-panel {
+  transition: box-shadow .25s;
+  padding: $card-padding;
+  margin: $element-top-margin 0 $element-bottom-margin 0;
+  border-radius: 2px;
+  @extend .z-depth-1;
+  background-color: $card-bg-color;
+}
+
+.card {
+  position: relative;
+  margin: $element-top-margin 0 $element-bottom-margin 0;
+  background-color: $card-bg-color;
+  transition: box-shadow .25s;
+  border-radius: 2px;
+  @extend .z-depth-1;
+
+  .card-title {
+    font-size: 24px;
+    font-weight: bold;
+    text-shadow: 1px 0 0 #000, -1px 0 0 #000, 0 1px 0 #000, 0 -1px 0 #000, 1px 1px #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
+    &.activator {
+      cursor: pointer;
+    }
+  }
+
+  // Card Sizes
+  &.small, &.medium, &.large {
+    position: relative;
+
+    .card-image {
+      max-height: 100%;
+      overflow: hidden;
+    }
+    .card-content {
+      max-height: 40%;
+      overflow: hidden;
+    }
+    .card-action {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 1;
+      background-color: inherit;
+    }
+  }
+  &.field {
+    position: relative;
+    margin:10;
+    box-shadow:none;
+    /* border-color: $link-color;
+    border-style: solid;
+    border-width:2px 2px 2px 2px;*/
+    webkit-transition: all 0.5s ease; /* Safari and Chrome */
+    -moz-transition: all  0.5s  ease; /* Firefox */
+    -ms-transition: all  0.5s  ease; /* IE 9 */
+    -o-transition: all  0.5s  ease; /* Opera */
+      transition: all  0.5s  ease;
+    .card-image {
+      max-height: 100%;
+      overflow: hidden;
+    }
+    .card-content {
+      max-height: 40%;
+      overflow: hidden;
+    }
+    .card-action {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 1;
+      background-color: inherit;
+    }
+  }
+  &.field:hover {
+  -webkit-transform:scale(1.1); /* Safari and Chrome */
+  -moz-transform:scale(1.1); /* Firefox */
+  -ms-transform:scale(1.1); /* IE 9 */
+  -o-transform:scale(1.1); /* Opera */
+   transform:scale(1.1);
+  }  
+  &.field {
+    height: 150px;
+  }
+
+  &.small {
+    height: 200px;
+  }
+
+  &.medium {
+    height: 400px;
+  }
+
+  &.large {
+    height: 500px;
+  }
+
+
+  .card-image {
+    position: relative;
+
+    // Image background for content
+    img {
+      display: block;
+      position: relative;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      background:transparent;
+      width: 100%;
+    }
+
+    .card-title {
+      color: $card-text-color;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      padding: $card-padding;
+    }
+
+  }
+
+  .card-content {
+    padding: $card-padding;
+    border-radius: 0 0 2px 2px;
+
+
+    p {
+      margin: 0;
+      color: inherit;
+    }
+    .card-title {
+      line-height: 48px;
+    }
+  }
+
+  .card-action {
+    border-top: 1px solid rgba(160,160,160,.2);
+    padding: $card-padding;
+
+    a:not(.btn):not(.btn-large):not(.btn-floating) {
+      color: $card-link-color;
+      margin-right: $card-padding;
+      transition: color .3s ease;
+      text-transform: uppercase;
+
+      &:hover { color: $card-link-color-light; }
+    }
+  }
+
+  .card-reveal {
+    padding: $card-padding;
+    position: absolute;
+    background-color: $card-bg-color;
+    width: 100%;
+    overflow-y: auto;
+    top: 100%;
+    height: 100%;
+    z-index: 1;
+    display: none;
+
+    .card-title {
+      cursor: pointer;
+      display: block;
+    }
+
+  }
+}

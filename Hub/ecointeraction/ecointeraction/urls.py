@@ -24,7 +24,7 @@ urlpatterns = [
     url(r'^CairnFORM/', include('CairnFORM.urls')),
     url(r'^Classification/', include('classification.urls')),
     #url(r'^MaximeDaniel/', include('maximedaniel.urls')),
-    #url(r'^Sedyl/', include('sedyl.urls')),
+    url(r'^Sedyl/', include('sedyl.urls')),
     #url(r'^production/', include('production.urls')),
     #url(r'^simulator/', include('simulator.urls')),
     url(r'^admin/', admin.site.urls),

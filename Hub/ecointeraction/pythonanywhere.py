@@ -8,7 +8,7 @@ import sys
 from django.utils import timezone
 
 def processProductionForecast(tomorrow):
-	process_url = 'http://itame.pythonanywhere.com/production/processForecast/'
+	process_url = 'http://itame.estia.fr/production/processForecast/'
 	r = requests.get(process_url)
 	print(r.content)
 
@@ -30,7 +30,7 @@ def postProductionForecast(tomorrow):
 		grey_power = prevision_production_csv.ix[i][2]
 		green_power = prevision_production_csv.ix[i][3]
 		green_rate=green_power/(grey_power+green_power)
-		post_url = 'http://itame.pythonanywhere.com/production/postForecast/'
+		post_url = 'http://itame.estia.fr/production/postForecast/'
 		post_url = post_url+timestamp.strftime('%Y/%m/%d/%H/%M')+'/'+str(int(grey_power))+'/'+str(int(green_power))+'/'+str(green_rate)+'/'
 		#print("saving ", post_url,"...")
 		r = requests.get(post_url)

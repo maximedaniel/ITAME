@@ -25,7 +25,7 @@ SECRET_KEY = 'iono+hv3d_p=1*(d=*q2b8ls+@08njtl=w6f9vh9)yf&p(k#s$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['itame.pythonanywhere.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['itame.estia.fr', 'itame.pythonanywhere.com', 'localhost', '127.0.0.1', '0.0.0.0']
 
 
 # Application definition

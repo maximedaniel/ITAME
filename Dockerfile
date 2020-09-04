@@ -13,10 +13,7 @@ FROM ubuntu:16.04
 
 RUN apt-get -y update
 RUN apt-get -y install python-pip
-RUN pip install Django==1.10
-RUN pip install django-extensions
   
-
 WORKDIR /usr/src/hub
 COPY Hub/ .
 COPY requirements.txt .
